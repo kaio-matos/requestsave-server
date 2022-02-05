@@ -1,4 +1,10 @@
 node_modules
-# Keep environment variables out of version control
-.env
+
+# Temporary
 /src/temporary.ts
+
+
+# Environment variables
+.env
+/config/dev.env
+/config/production.env

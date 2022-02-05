@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AccountTie {
+  id          Int      @id @default(autoincrement())
+  phoneNumber String   @unique
+  account     Account?
+}
+
+model Account {
+  id                    Int       @id @default(autoincrement())
+  first_name            String
+  last_name             String
+  email                 String    @unique
+  confirmedEmail        Boolean   @default(false)
+  confirmedEmailToken   String?
+  confirmedEmailExpires DateTime?
+  password              String
+  passwordResetToken    String?
+  passwordResetExpires  DateTime?
+  role                  String    @default("USER") @db.VarChar(20)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  accountTie    AccountTie @relation(fields: [accountTie_id], references: [id])
+  accountTie_id Int        @unique
+
+  clients  Client[]
+  products Product[]
+}
+
+model Client {
+  account    Account  @relation(fields: [account_id], references: [id])
+  account_id Int
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  email      String?  @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  requests Request[]
+}
+
+model Product {
+
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  basePrice Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account    Account @relation(fields: [account_id], references: [id])
+  account_id Int
+
+  requests Request[]
+}
+
+model Request {
+
+  id        Int      @id @default(autoincrement())
+  title     String   @unique
+  status    String   @default("TODO") @db.VarChar(20)
+  price     Float
+  paidOut   Float    @default(0)
+  balance   Float    @default(0)
+  expiresIn DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [product_id], references: [id])
+  client  Client  @relation(fields: [client_id], references: [id])
+
+  product_id Int
+  client_id  Int
+}

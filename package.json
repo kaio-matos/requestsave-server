@@ -4,7 +4,8 @@
   "main": "server.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn ts-node src/server.ts"
+    "dev": "yarn ts-node src/server.ts",
+    "migratedev:mysql": "dotenv -e config/dev.env -- yarn prisma migrate dev --name dev"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",

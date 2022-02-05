@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export default function generateTokenAndExpiration(
+export function generateTokenAndExpiration(
   expirationTime: number,
   length: number
 ) {

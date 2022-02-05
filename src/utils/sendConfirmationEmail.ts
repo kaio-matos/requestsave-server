@@ -1,6 +1,6 @@
 import mailer from "../modules/mailer";
 
-export default async function sendConfirmationEmail(
+export async function sendConfirmationEmail(
   token: string,
   email: string
 ): Promise<void> {

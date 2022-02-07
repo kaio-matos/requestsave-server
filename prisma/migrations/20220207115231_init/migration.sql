@@ -10,8 +10,8 @@ CREATE TABLE `AccountTie` (
 -- CreateTable
 CREATE TABLE `Account` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `first_name` VARCHAR(191) NOT NULL,
-    `last_name` VARCHAR(191) NOT NULL,
+    `firstName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `confirmedEmail` BOOLEAN NOT NULL DEFAULT false,
     `confirmedEmailToken` VARCHAR(191) NULL,

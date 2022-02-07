@@ -29,7 +29,7 @@ class AccountValidationClass {
         .min(this.min.string)
         .max(this.max.email)
         .required(),
-      phoneNumber: Joi.string().length(15).required(),
+      phoneNumber: Joi.string().max(15).required(),
       password: Joi.string()
         .min(this.min.password)
         .max(this.max.password)

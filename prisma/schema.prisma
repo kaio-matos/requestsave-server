@@ -18,8 +18,8 @@ model AccountTie {
 
 model Account {
   id                    Int       @id @default(autoincrement())
-  first_name            String
-  last_name             String
+  firstName             String
+  lastName              String
   email                 String    @unique
   confirmedEmail        Boolean   @default(false)
   confirmedEmailToken   String?

@@ -4,7 +4,7 @@
   "main": "server.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "dotenv -e config/dev.env yarn nodemon src/server.ts",
+    "dev": "dotenv -e config/dev.env nodemon src/server.ts",
     "migratedev:mysql": "dotenv -e config/dev.env -- yarn prisma migrate dev --name init",
     "prisma:studio": "dotenv -e config/dev.env -- yarn prisma studio"
   },

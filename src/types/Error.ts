@@ -10,4 +10,5 @@ export type UnionCodesType =
   | "P2014"
   | "Validation:Error"
   | "User:Exist"
-  | "Server:Error";
+  | "Server:Error"
+  | "PhoneNumber:DontExist";

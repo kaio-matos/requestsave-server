@@ -1,8 +1,8 @@
 import Joi, { ValidationResult } from "joi";
 import {
-  AccountForgetPass,
-  AccountLogin,
-  AccountRegistration,
+  AccountForgetPassType,
+  AccountLoginType,
+  AccountRegistrationI,
 } from "../types/Account";
 
 class AccountValidationClass {
@@ -17,7 +17,7 @@ class AccountValidationClass {
     name: 50,
   };
 
-  registration = (data: AccountRegistration): ValidationResult => {
+  registration = (data: AccountRegistrationI): ValidationResult => {
     const schema = Joi.object({
       firstName: Joi.string()
         .min(this.min.string)
@@ -39,7 +39,7 @@ class AccountValidationClass {
     return schema.validate(data);
   };
 
-  login = (data: AccountLogin): ValidationResult => {
+  login = (data: AccountLoginType): ValidationResult => {
     const schema = Joi.object({
       email: Joi.string()
         .email()
@@ -55,7 +55,7 @@ class AccountValidationClass {
     return schema.validate(data);
   };
 
-  forgotResetPass = (data: AccountForgetPass): ValidationResult => {
+  forgotResetPass = (data: AccountForgetPassType): ValidationResult => {
     const schema = Joi.object({
       email: Joi.string()
         .email()

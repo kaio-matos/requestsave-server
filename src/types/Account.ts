@@ -1,6 +1,6 @@
 import { Account } from "@prisma/client";
 
-type AccountBasics = Omit<
+type AccountBasicsType = Omit<
   Account,
   | "id"
   | "confirmedEmail"
@@ -14,19 +14,24 @@ type AccountBasics = Omit<
   | "role"
 >;
 
-interface AccountRegistration extends AccountBasics {
+interface AccountRegistrationI extends AccountBasicsType {
   phoneNumber: string;
 }
 
-type AccountLogin = {
+type AccountLoginType = {
   email: string;
   password: string;
 };
 
-type AccountForgetPass = {
+type AccountForgetPassType = {
   email: string;
   token: string;
   password: string;
 };
 
-export { AccountBasics, AccountRegistration, AccountLogin, AccountForgetPass };
+export {
+  AccountBasicsType,
+  AccountRegistrationI,
+  AccountLoginType,
+  AccountForgetPassType,
+};

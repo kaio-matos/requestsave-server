@@ -1,18 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
-import dotenv from "dotenv";
-
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import path from "path";
 
 import accountRoutes from "./routes/accountRoutes";
 import panelRoutes from "./routes/panelRoutes";
-
-dotenv.config({
-  path: path.join(__dirname, "../config", "dev.env"),
-});
 
 class App {
   public express: express.Application;

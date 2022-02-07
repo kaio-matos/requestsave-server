@@ -1,28 +1,38 @@
 import nodemailer from "nodemailer";
-import hbs from "nodemailer-express-handlebars";
 import path from "path";
-import dotenv from "dotenv";
-dotenv.config({ path: path.join(__dirname, "../../config", ".env") });
+import fs from "fs";
+import Handlebars from "handlebars";
 
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
-  port: +process.env.MAIL_PORT,
+  port: Number(process.env.MAIL_PORT),
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
 });
 
-transport.use(
-  "compile",
-  hbs({
-    viewEngine: {
-      defaultLayout: undefined,
-      partialsDir: path.resolve("./src/resources/mail/"),
-    },
-    viewPath: path.resolve("./src/resources/mail/"),
-    extName: ".html",
-  })
-);
+async function sendMail(
+  email: string,
+  replacements: { [key: string]: any },
+  pathToHtml: string
+) {
+  const filePath = path.join(
+    __dirname,
+    "../resources/mail",
+    pathToHtml + ".html"
+  );
+  const source = fs.readFileSync(filePath, "utf-8").toString();
+  const template = Handlebars.compile(source);
 
-export default transport;
+  transport.sendMail({
+    to: email,
+    from: process.env.EMAIL,
+
+    subject: "Message title",
+    text: "Plaintext version of the message",
+    html: template(replacements),
+  });
+}
+
+export { sendMail };

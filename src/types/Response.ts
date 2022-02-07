@@ -1,5 +1,4 @@
-export type ResponseReferenceType = {
-  code: string;
+export type ResponseDataType = {
   message: string;
-  status: number;
+  data: any;
 };

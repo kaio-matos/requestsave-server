@@ -51,6 +51,29 @@ class AccountController {
       return res.status(err.status).json(err);
     }
   }
+
+  public async resendRegisterConfirmation(req: Request, res: Response): Promise<Response> {
+    const email: string = req.body.email;
+
+    try {
+      if (!email) throw new ErrorDealer("Validation:Error");
+
+      const { token, expiration } = generateTokenAndExpiration(24, 20);
+      const account = await prisma.account.updateMany({
+        where: { AND: [{ email: { equals: email } }, { confirmedEmail: { equals: false } }] },
+        data: { confirmedEmailExpires: expiration, confirmedEmailToken: token },
+      });
+
+      if (account.count === 0) throw new ErrorDealer("User:EmailConfirmed");
+
+      await sendConfirmationEmail(token, email);
+
+      return res.status(200).json(ResMsg("Email enviado com sucesso", true));
+    } catch (error) {
+      const err = errorHelper(error);
+      return res.status(err.status).json(err);
+    }
+  }
 }
 
 export default new AccountController();

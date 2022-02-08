@@ -20,6 +20,11 @@ class ClientValidationClass {
     });
     return schema.validate(data);
   };
+
+  id = (id: string): ValidationResult => {
+    const schema = Joi.number().positive().required();
+    return schema.validate(id);
+  };
 }
 
 const ClientValidation = new ClientValidationClass();

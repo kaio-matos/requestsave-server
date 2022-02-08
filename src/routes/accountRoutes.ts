@@ -11,7 +11,7 @@ routes.get("/confirmregistration", AccountController.confirmRegistration);
 
 routes.post("/login", AccountController.login);
 routes.post("/forgetpassword", AccountController.forgotSendEmail);
-// routes.post("/forgetresetpassword", AccountController.forgotResetPass);
+routes.post("/forgetresetpassword", AccountController.forgotResetPass);
 
 routes.post("/resetpassword", auth, AccountController.resetPassword);
 routes.post("/checktoken", auth, AccountController.checkJWT);

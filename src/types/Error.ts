@@ -7,7 +7,7 @@ export type ErrorReferenceType = {
 export type UnionCodesType =
   | "P1008"
   | "P1017"
-  | "P2014"
+  | "P2025"
   | "Validation:Error"
   | "User:Exist"
   | "User:DontExist"

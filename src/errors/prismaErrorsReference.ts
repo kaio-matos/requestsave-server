@@ -12,4 +12,9 @@ export const prismaErrorsReference: ErrorReferenceType[] = [
     message: "O servidor fechou a conexão com o banco de dados",
     status: 408,
   },
+  {
+    code: "P2025",
+    message: "Dado não encontrado",
+    status: 404,
+  },
 ];

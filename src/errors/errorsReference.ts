@@ -49,6 +49,11 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "O token para autorização é inválido",
     status: 400,
   },
+  {
+    code: "User:TokenExpired",
+    message: "O token expirou",
+    status: 400,
+  },
 
   {
     code: "User:EmailConfirmed",

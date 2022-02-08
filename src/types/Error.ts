@@ -15,6 +15,7 @@ export type UnionCodesType =
   | "User:Unauthorized"
   | "User:TokenBadFormatted"
   | "User:TokenInvalid"
+  | "User:TokenExpired"
   | "User:EmailConfirmed"
   | "User:EmailNotConfirmed"
   | "User:EmailInvalidToken"

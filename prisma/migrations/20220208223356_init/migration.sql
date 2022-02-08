@@ -31,15 +31,13 @@ CREATE TABLE `Account` (
 
 -- CreateTable
 CREATE TABLE `Client` (
-    `account_id` INTEGER NOT NULL,
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `account_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Client_name_key`(`name`),
-    UNIQUE INDEX `Client_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -52,7 +50,6 @@ CREATE TABLE `Product` (
     `updatedAt` DATETIME(3) NOT NULL,
     `account_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Product_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -70,7 +67,6 @@ CREATE TABLE `Request` (
     `product_id` INTEGER NOT NULL,
     `client_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Request_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

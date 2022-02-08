@@ -137,29 +137,29 @@ class AccountController {
 
   public Auth = {
     async logout(req: Request, res: Response): Promise<Response> {
-      const id = req.body.id;
-      if (!id) throw new ErrorDealer("User:TokenInvalid");
+      const account_id = req.body.account_id;
+      if (!account_id) throw new ErrorDealer("User:TokenInvalid");
 
       return res.status(200).json(ResMsg("Usuário deslogado com sucesso", true));
     },
 
     async edit(req: Request, res: Response): Promise<Response> {
-      const { id, ...newData } = req.body;
+      const { account_id, ...newData } = req.body;
       if (!newData) {
         throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
       }
       if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
-      const account = await prisma.account.findUnique({ where: { id } });
+      const account = await prisma.account.findUnique({ where: { id: account_id } });
       if (!account) throw new ErrorDealer("User:DontExist");
 
-      await prisma.account.update({ where: { id }, data: { ...newData } });
+      await prisma.account.update({ where: { id: account_id }, data: { ...newData } });
 
       return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
     },
 
     async resetPassword(req: Request, res: Response): Promise<Response> {
-      const { id, password } = req.body;
+      const { account_id, password } = req.body;
 
       if (AccountValidation.password(password).error) {
         throw new ErrorDealer(
@@ -168,18 +168,18 @@ class AccountController {
         );
       }
 
-      const account = await prisma.account.findUnique({ where: { id } });
+      const account = await prisma.account.findUnique({ where: { id: account_id } });
       if (!account) throw new ErrorDealer("User:DontExist");
 
-      await prisma.account.update({ where: { id }, data: { password } });
+      await prisma.account.update({ where: { id: account_id }, data: { password } });
 
       return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
     },
 
     async delete(req: Request, res: Response): Promise<Response> {
-      const id = req.body.id;
+      const account_id = req.body.account_id;
 
-      const del = await prisma.account.delete({ where: { id } });
+      const del = await prisma.account.delete({ where: { id: account_id } });
       // Missing | Delete phoneNumber linked with this account
       if (!del) throw new ErrorDealer("User:DontExist");
 
@@ -187,9 +187,9 @@ class AccountController {
     },
 
     async checkJWT(req: Request, res: Response): Promise<Response> {
-      const id = req.body.id;
+      const account_id = req.body.account_id;
 
-      if (!id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
+      if (!account_id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
       return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
     },
   };

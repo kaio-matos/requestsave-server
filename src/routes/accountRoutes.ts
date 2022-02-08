@@ -17,6 +17,6 @@ routes.post("/login", AccountController.login);
 routes.post("/checktoken", auth, AccountController.checkJWT);
 routes.post("/logout", auth, AccountController.logout);
 routes.put("/edit", auth, AccountController.edit);
-// routes.delete("/delete", auth, AccountController.delete);
+routes.delete("/delete", auth, AccountController.delete);
 
 export default routes;

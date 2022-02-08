@@ -10,5 +10,9 @@ export type UnionCodesType =
   | "P2014"
   | "Validation:Error"
   | "User:Exist"
+  | "User:DontExist"
+  | "User:EmailConfirmed"
+  | "User:EmailInvalidToken"
+  | "User:EmailExpiredToken"
   | "Server:Error"
   | "PhoneNumber:DontExist";

@@ -74,6 +74,39 @@ class AccountController {
       return res.status(err.status).json(err);
     }
   }
+
+  public async confirmRegistration(req: Request, res: Response): Promise<Response> {
+    const { token, email } = req.query;
+    const now = new Date();
+
+    try {
+      if (!email || !token) {
+        throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
+      }
+
+      const account = await prisma.account.findUnique({ where: { email: email as string } });
+
+      if (!account) throw new ErrorDealer("User:DontExist");
+      if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
+      if (token !== account.confirmedEmailToken) throw new ErrorDealer("User:EmailInvalidToken");
+      if (account.confirmedEmailExpires && now > account.confirmedEmailExpires)
+        throw new ErrorDealer("User:EmailExpiredToken");
+
+      await prisma.account.update({
+        where: {
+          email: email as string,
+        },
+        data: {
+          confirmedEmail: true,
+        },
+      });
+
+      return res.status(200).json(ResMsg("Email confirmado com sucesso!", true));
+    } catch (error) {
+      const err = errorHelper(error);
+      return res.status(err.status).json(err);
+    }
+  }
 }
 
 export default new AccountController();

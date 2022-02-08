@@ -5,18 +5,18 @@ import auth from "../middlewares/auth";
 
 const routes = Router();
 
-routes.post("/register", AccountController.registerAndSendEmail);
-routes.post("/resendregisterconfirmation", AccountController.resendRegisterConfirmation);
-routes.get("/confirmregistration", AccountController.confirmRegistration);
+routes.post("/register", AccountController.Register.sendEmail);
+routes.post("/resendregisterconfirmation", AccountController.Register.resendEmail);
+routes.get("/confirmregistration", AccountController.Register.confirmEmail);
 
 routes.post("/login", AccountController.login);
-routes.post("/forgetpassword", AccountController.forgotSendEmail);
-routes.post("/forgetresetpassword", AccountController.forgotResetPass);
+routes.post("/forgetpassword", AccountController.ForgetPassword.sendEmail);
+routes.post("/forgetresetpassword", AccountController.ForgetPassword.reset);
 
-routes.post("/resetpassword", auth, AccountController.resetPassword);
-routes.post("/checktoken", auth, AccountController.checkJWT);
-routes.post("/logout", auth, AccountController.logout);
-routes.put("/edit", auth, AccountController.edit);
-routes.delete("/delete", auth, AccountController.delete);
+routes.post("/resetpassword", auth, AccountController.Auth.resetPassword);
+routes.post("/checktoken", auth, AccountController.Auth.checkJWT);
+routes.post("/logout", auth, AccountController.Auth.logout);
+routes.put("/edit", auth, AccountController.Auth.edit);
+routes.delete("/delete", auth, AccountController.Auth.delete);
 
 export default routes;

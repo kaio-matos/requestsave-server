@@ -15,89 +15,6 @@ import { createJWT } from "../utils/createJwt";
 import { sendMail } from "../modules/mailer";
 
 class AccountController {
-  public async registerAndSendEmail(req: Request, res: Response): Promise<Response> {
-    const accountData: AccountRegistrationI = req.body;
-    const { email, firstName, lastName, password, phoneNumber } = accountData;
-
-    if (AccountValidation.registration(accountData).error) {
-      throw new ErrorDealer("Validation:Error");
-    }
-    const accountTie = await prisma.accountTie.findUnique({
-      where: { phoneNumber },
-      include: { account: { select: { email: true } } },
-    });
-
-    if (!accountTie?.phoneNumber) throw new ErrorDealer("PhoneNumber:DontExist");
-    if (accountTie?.account?.email) throw new ErrorDealer("User:Exist");
-
-    const { token, expiration } = generateTokenAndExpiration(24, 20);
-
-    const account = await prisma.account.create({
-      data: {
-        email,
-        firstName,
-        lastName,
-        password,
-        confirmedEmailExpires: expiration,
-        confirmedEmailToken: token,
-        accountTie: { connect: { phoneNumber } },
-      },
-    });
-
-    await sendConfirmationEmail(token, account.email);
-
-    return res.status(201).json(ResMsg("Email enviado com sucesso", true));
-  }
-
-  public async resendRegisterConfirmation(req: Request, res: Response): Promise<Response> {
-    const email: string = req.body.email;
-
-    if (AccountValidation.email(email).error) throw new ErrorDealer("Validation:Error");
-
-    const { token, expiration } = generateTokenAndExpiration(24, 20);
-    const account = await prisma.account.findUnique({ where: { email } });
-
-    if (!account) throw new ErrorDealer("User:DontExist");
-    if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
-
-    await prisma.account.update({
-      where: { email },
-      data: { confirmedEmailExpires: expiration, confirmedEmailToken: token },
-    });
-    const message = await sendConfirmationEmail(token, email);
-    if (!message) throw new ErrorDealer("Email:SendFailed");
-
-    return res.status(200).json(ResMsg("Email enviado com sucesso", true));
-  }
-
-  public async confirmRegistration(req: Request, res: Response): Promise<Response> {
-    const { token, email } = req.query;
-    const now = new Date();
-
-    if (!email || !token) {
-      throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
-    }
-
-    const account = await prisma.account.findUnique({ where: { email: email as string } });
-
-    if (!account) throw new ErrorDealer("User:DontExist");
-    if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
-    if (token !== account.confirmedEmailToken) throw new ErrorDealer("User:EmailInvalidToken");
-    if (account.confirmedEmailExpires && now > account.confirmedEmailExpires)
-      throw new ErrorDealer("User:EmailExpiredToken");
-
-    await prisma.account.update({
-      where: {
-        email: email as string,
-      },
-      data: {
-        confirmedEmail: true,
-      },
-    });
-
-    return res.status(200).json(ResMsg("Email confirmado com sucesso!", true));
-  }
-
   public async login(req: Request, res: Response): Promise<Response> {
     const { email, password }: { email: string; password: string } = req.body;
 
@@ -135,118 +52,206 @@ class AccountController {
     return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }
 
-  public async logout(req: Request, res: Response): Promise<Response> {
-    const id = req.body.id;
-    if (!id) throw new ErrorDealer("User:TokenInvalid");
+  public Register = {
+    async sendEmail(req: Request, res: Response): Promise<Response> {
+      const accountData: AccountRegistrationI = req.body;
+      const { email, firstName, lastName, password, phoneNumber } = accountData;
 
-    return res.status(200).json(ResMsg("Usuário deslogado com sucesso", true));
-  }
+      if (AccountValidation.registration(accountData).error) {
+        throw new ErrorDealer("Validation:Error");
+      }
+      const accountTie = await prisma.accountTie.findUnique({
+        where: { phoneNumber },
+        include: { account: { select: { email: true } } },
+      });
 
-  public async edit(req: Request, res: Response): Promise<Response> {
-    const { id, ...newData } = req.body;
-    if (!newData) {
-      throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
-    }
-    if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+      if (!accountTie?.phoneNumber) throw new ErrorDealer("PhoneNumber:DontExist");
+      if (accountTie?.account?.email) throw new ErrorDealer("User:Exist");
 
-    const account = await prisma.account.findUnique({ where: { id } });
-    if (!account) throw new ErrorDealer("User:DontExist");
+      const { token, expiration } = generateTokenAndExpiration(24, 20);
 
-    await prisma.account.update({ where: { id }, data: { ...newData } });
+      const account = await prisma.account.create({
+        data: {
+          email,
+          firstName,
+          lastName,
+          password,
+          confirmedEmailExpires: expiration,
+          confirmedEmailToken: token,
+          accountTie: { connect: { phoneNumber } },
+        },
+      });
 
-    return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
-  }
+      await sendConfirmationEmail(token, account.email);
 
-  public async checkJWT(req: Request, res: Response): Promise<Response> {
-    const id = req.body.id;
+      return res.status(201).json(ResMsg("Email enviado com sucesso", true));
+    },
+    async resendEmail(req: Request, res: Response): Promise<Response> {
+      const email: string = req.body.email;
 
-    if (!id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
-    return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
-  }
+      if (AccountValidation.email(email).error) throw new ErrorDealer("Validation:Error");
 
-  public async delete(req: Request, res: Response): Promise<Response> {
-    const id = req.body.id;
+      const { token, expiration } = generateTokenAndExpiration(24, 20);
+      const account = await prisma.account.findUnique({ where: { email } });
 
-    const del = await prisma.account.delete({ where: { id } });
-    // Missing | Delete phoneNumber linked with this account
-    if (!del) throw new ErrorDealer("User:DontExist");
+      if (!account) throw new ErrorDealer("User:DontExist");
+      if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
 
-    return res.status(200).json(ResMsg("Conta deletada com sucesso!", true));
-  }
+      await prisma.account.update({
+        where: { email },
+        data: { confirmedEmailExpires: expiration, confirmedEmailToken: token },
+      });
+      const message = await sendConfirmationEmail(token, email);
+      if (!message) throw new ErrorDealer("Email:SendFailed");
 
-  public async forgotSendEmail(req: Request, res: Response): Promise<Response> {
-    const { email }: { email: string } = req.body;
+      return res.status(200).json(ResMsg("Email enviado com sucesso", true));
+    },
+    async confirmEmail(req: Request, res: Response): Promise<Response> {
+      const { token, email } = req.query;
+      const now = new Date();
 
-    if (AccountValidation.email(email).error) {
-      throw new ErrorDealer("Validation:Error", "Por favor escreva o email corretamente");
-    }
+      if (!email || !token) {
+        throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
+      }
 
-    const account = await prisma.account.findUnique({ where: { email } });
-    if (!account) throw new ErrorDealer("User:DontExist");
+      const account = await prisma.account.findUnique({ where: { email: email as string } });
 
-    const { token, expiration } = generateTokenAndExpiration(1, 7);
+      if (!account) throw new ErrorDealer("User:DontExist");
+      if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
+      if (token !== account.confirmedEmailToken) throw new ErrorDealer("User:EmailInvalidToken");
+      if (account.confirmedEmailExpires && now > account.confirmedEmailExpires)
+        throw new ErrorDealer("User:EmailExpiredToken");
 
-    const mail = await sendMail(email, { token }, "auth/forgot_password", {
-      subject: "Esqueceu a senha? Utilize este link para recuperá-la",
-      text: "Caso não tenha sido você que fez este pedido apenas ignore",
-    });
+      await prisma.account.update({
+        where: {
+          email: email as string,
+        },
+        data: {
+          confirmedEmail: true,
+        },
+      });
 
-    if (!mail) throw new ErrorDealer("Email:SendFailed");
+      return res.status(200).json(ResMsg("Email confirmado com sucesso!", true));
+    },
+  };
 
-    await prisma.account.update({
-      where: { email },
-      data: {
-        passwordResetToken: token,
-        passwordResetExpires: expiration,
-      },
-    });
+  public Auth = {
+    async logout(req: Request, res: Response): Promise<Response> {
+      const id = req.body.id;
+      if (!id) throw new ErrorDealer("User:TokenInvalid");
 
-    return res.status(200).json(ResMsg("Email enviado com sucesso", true));
-  }
+      return res.status(200).json(ResMsg("Usuário deslogado com sucesso", true));
+    },
 
-  public async forgotResetPass(req: Request, res: Response): Promise<Response> {
-    const { email, token, password }: { email: string; token: string; password: string } = req.body;
-    const now = new Date();
-    if (AccountValidation.forgotResetPass({ email, token, password }).error) {
-      throw new ErrorDealer(
-        "Validation:Error",
-        "Por favor escreva corretamente email, senha e o código"
-      );
-    }
+    async edit(req: Request, res: Response): Promise<Response> {
+      const { id, ...newData } = req.body;
+      if (!newData) {
+        throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
+      }
+      if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
-    const account = await prisma.account.findUnique({ where: { email } });
+      const account = await prisma.account.findUnique({ where: { id } });
+      if (!account) throw new ErrorDealer("User:DontExist");
 
-    if (!account) throw new ErrorDealer("User:DontExist");
-    if (!account.confirmedEmail) throw new ErrorDealer("User:EmailNotConfirmed");
-    if (token !== account.passwordResetToken) throw new ErrorDealer("User:TokenInvalid");
-    if (account.passwordResetExpires && now > account.passwordResetExpires)
-      throw new ErrorDealer("User:TokenExpired");
+      await prisma.account.update({ where: { id }, data: { ...newData } });
 
-    await prisma.account.update({
-      where: { email },
-      data: { password, passwordResetExpires: now },
-    });
+      return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
+    },
 
-    return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
-  }
+    async resetPassword(req: Request, res: Response): Promise<Response> {
+      const { id, password } = req.body;
 
-  public async resetPassword(req: Request, res: Response): Promise<Response> {
-    const { id, password } = req.body;
+      if (AccountValidation.password(password).error) {
+        throw new ErrorDealer(
+          "Validation:Error",
+          "Por favor use uma senha com pelo menos seis dígitos"
+        );
+      }
 
-    if (AccountValidation.password(password).error) {
-      throw new ErrorDealer(
-        "Validation:Error",
-        "Por favor use uma senha com pelo menos seis dígitos"
-      );
-    }
+      const account = await prisma.account.findUnique({ where: { id } });
+      if (!account) throw new ErrorDealer("User:DontExist");
 
-    const account = await prisma.account.findUnique({ where: { id } });
-    if (!account) throw new ErrorDealer("User:DontExist");
+      await prisma.account.update({ where: { id }, data: { password } });
 
-    await prisma.account.update({ where: { id }, data: { password } });
+      return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
+    },
 
-    return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
-  }
+    async delete(req: Request, res: Response): Promise<Response> {
+      const id = req.body.id;
+
+      const del = await prisma.account.delete({ where: { id } });
+      // Missing | Delete phoneNumber linked with this account
+      if (!del) throw new ErrorDealer("User:DontExist");
+
+      return res.status(200).json(ResMsg("Conta deletada com sucesso!", true));
+    },
+
+    async checkJWT(req: Request, res: Response): Promise<Response> {
+      const id = req.body.id;
+
+      if (!id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
+      return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
+    },
+  };
+
+  public ForgetPassword = {
+    async sendEmail(req: Request, res: Response): Promise<Response> {
+      const { email }: { email: string } = req.body;
+
+      if (AccountValidation.email(email).error) {
+        throw new ErrorDealer("Validation:Error", "Por favor escreva o email corretamente");
+      }
+
+      const account = await prisma.account.findUnique({ where: { email } });
+      if (!account) throw new ErrorDealer("User:DontExist");
+
+      const { token, expiration } = generateTokenAndExpiration(1, 7);
+
+      const mail = await sendMail(email, { token }, "auth/forgot_password", {
+        subject: "Esqueceu a senha? Utilize este link para recuperá-la",
+        text: "Caso não tenha sido você que fez este pedido apenas ignore",
+      });
+
+      if (!mail) throw new ErrorDealer("Email:SendFailed");
+
+      await prisma.account.update({
+        where: { email },
+        data: {
+          passwordResetToken: token,
+          passwordResetExpires: expiration,
+        },
+      });
+
+      return res.status(200).json(ResMsg("Email enviado com sucesso", true));
+    },
+
+    async reset(req: Request, res: Response): Promise<Response> {
+      const { email, token, password }: { email: string; token: string; password: string } =
+        req.body;
+      const now = new Date();
+      if (AccountValidation.forgotResetPass({ email, token, password }).error) {
+        throw new ErrorDealer(
+          "Validation:Error",
+          "Por favor escreva corretamente email, senha e o código"
+        );
+      }
+
+      const account = await prisma.account.findUnique({ where: { email } });
+
+      if (!account) throw new ErrorDealer("User:DontExist");
+      if (!account.confirmedEmail) throw new ErrorDealer("User:EmailNotConfirmed");
+      if (token !== account.passwordResetToken) throw new ErrorDealer("User:TokenInvalid");
+      if (account.passwordResetExpires && now > account.passwordResetExpires)
+        throw new ErrorDealer("User:TokenExpired");
+
+      await prisma.account.update({
+        where: { email },
+        data: { password, passwordResetExpires: now },
+      });
+
+      return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
+    },
+  };
 }
 
 export default new AccountController();

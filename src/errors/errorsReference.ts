@@ -81,4 +81,10 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "O envio de email falhou, tente novamente",
     status: 500,
   },
+
+  {
+    code: "Client:Exist",
+    message: "Este cliente já existe",
+    status: 400,
+  },
 ];

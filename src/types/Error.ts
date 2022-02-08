@@ -24,10 +24,13 @@ type UnionCodesUserType =
   | "User:EmailInvalidToken"
   | "User:EmailExpiredToken";
 
+type UnionCodesClientType = "Client:Exist";
+
 export type UnionCodesType =
   | UnionCodesPrismaType
   | UnionCodesValidationType
   | UnionCodesEmailType
   | UnionCodesServerType
   | UnionCodesPhoneNumberType
-  | UnionCodesUserType;
+  | UnionCodesUserType
+  | UnionCodesClientType;

@@ -14,7 +14,7 @@ routes.post("/login", AccountController.login);
 // routes.post("/forgetresetpassword", AccountController.forgotResetPass);
 
 // routes.post("/resetpassword", auth, AccountController.resetPassword);
-// routes.post("/checktoken", auth, AccountController.checkJWT);
+routes.post("/checktoken", auth, AccountController.checkJWT);
 routes.post("/logout", auth, AccountController.logout);
 routes.put("/edit", auth, AccountController.edit);
 // routes.delete("/delete", auth, AccountController.delete);

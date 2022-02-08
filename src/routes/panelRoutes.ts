@@ -11,7 +11,7 @@ const routes = Router();
 routes.use(auth);
 
 routes.post("/client", UserController.createClient);
-// routes.patch("/client", UserController.editClient);
+routes.put("/client", UserController.editClient);
 // routes.delete("/client", UserController.deleteClient);
 // routes.get("/client", UserController.getClients);
 

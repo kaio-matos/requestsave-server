@@ -23,5 +23,20 @@ class ClientController {
     const CLIENT = await prisma.client.create({ data: data });
     return res.status(200).json(ResMsg("Cliente criado com sucesso", CLIENT));
   }
+
+  public async edit(req: Request, res: Response): Promise<Response> {
+    const { account_id, ...newData } = req.body;
+
+    if (!newData) throw new ErrorDealer("Validation:Error");
+    if (ClientValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+
+    const updated = await prisma.client.updateMany({
+      where: { AND: [{ id: newData.id }, { account_id }] },
+      data: newData,
+    });
+    if (updated.count === 0) throw new ErrorDealer("Client:DontExist");
+
+    return res.status(200).json(ResMsg("Cliente editado com sucesso!", true));
+  }
 }
 export default new ClientController();

@@ -132,6 +132,21 @@ class AccountController {
     });
     return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }
+
+  public async edit(req: Request, res: Response): Promise<Response> {
+    const { id, ...newData } = req.body;
+    if (!newData) {
+      throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
+    }
+    if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+
+    const account = await prisma.account.findUnique({ where: { id } });
+    if (!account) throw new ErrorDealer("User:DontExist");
+
+    await prisma.account.update({ where: { id }, data: { ...newData } });
+
+    return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
+  }
 }
 
 export default new AccountController();

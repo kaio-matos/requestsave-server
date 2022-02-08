@@ -38,5 +38,16 @@ class ClientController {
 
     return res.status(200).json(ResMsg("Cliente editado com sucesso!", true));
   }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { account_id, id } = req.body;
+    if (!id) throw new ErrorDealer("Validation:Error");
+    if (ClientValidation.id(id).error) throw new ErrorDealer("Validation:Error");
+
+    const deleted = await prisma.client.deleteMany({ where: { AND: [{ id }, { account_id }] } });
+    if (deleted.count === 0) throw new ErrorDealer("Client:DontExist");
+
+    return res.status(200).json(ResMsg("Cliente deletado com sucesso!", true));
+  }
 }
 export default new ClientController();

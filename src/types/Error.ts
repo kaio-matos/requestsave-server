@@ -19,5 +19,6 @@ export type UnionCodesType =
   | "User:EmailNotConfirmed"
   | "User:EmailInvalidToken"
   | "User:EmailExpiredToken"
+  | "Email:SendFailed"
   | "Server:Error"
   | "PhoneNumber:DontExist";

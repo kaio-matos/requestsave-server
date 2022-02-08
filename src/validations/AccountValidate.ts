@@ -1,9 +1,5 @@
 import Joi, { ValidationResult } from "joi";
-import {
-  AccountForgetPassType,
-  AccountLoginType,
-  AccountRegistrationI,
-} from "../types/Account";
+import { AccountForgetPassType, AccountLoginType, AccountRegistrationI } from "../types/Account";
 
 class AccountValidationClass {
   min = {
@@ -19,21 +15,11 @@ class AccountValidationClass {
 
   registration = (data: AccountRegistrationI): ValidationResult => {
     const schema = Joi.object({
-      firstName: Joi.string()
-        .min(this.min.string)
-        .max(this.max.name)
-        .required(),
+      firstName: Joi.string().min(this.min.string).max(this.max.name).required(),
       lastName: Joi.string().min(this.min.string).max(this.max.name).required(),
-      email: Joi.string()
-        .email()
-        .min(this.min.string)
-        .max(this.max.email)
-        .required(),
+      email: Joi.string().email().min(this.min.string).max(this.max.email).required(),
       phoneNumber: Joi.string().max(15).required(),
-      password: Joi.string()
-        .min(this.min.password)
-        .max(this.max.password)
-        .required(),
+      password: Joi.string().min(this.min.password).max(this.max.password).required(),
     });
 
     return schema.validate(data);
@@ -41,15 +27,8 @@ class AccountValidationClass {
 
   login = (data: AccountLoginType): ValidationResult => {
     const schema = Joi.object({
-      email: Joi.string()
-        .email()
-        .min(this.min.string)
-        .max(this.max.email)
-        .required(),
-      password: Joi.string()
-        .min(this.min.password)
-        .max(this.max.password)
-        .required(),
+      email: Joi.string().email().min(this.min.string).max(this.max.email).required(),
+      password: Joi.string().min(this.min.password).max(this.max.password).required(),
     });
 
     return schema.validate(data);
@@ -57,16 +36,9 @@ class AccountValidationClass {
 
   forgotResetPass = (data: AccountForgetPassType): ValidationResult => {
     const schema = Joi.object({
-      email: Joi.string()
-        .email()
-        .min(this.min.string)
-        .max(this.max.email)
-        .required(),
+      email: Joi.string().email().min(this.min.string).max(this.max.email).required(),
       token: Joi.string().length(7).required(),
-      password: Joi.string()
-        .min(this.min.password)
-        .max(this.max.password)
-        .required(),
+      password: Joi.string().min(this.min.password).max(this.max.password).required(),
     });
 
     return schema.validate(data);
@@ -82,6 +54,11 @@ class AccountValidationClass {
     });
 
     return schema.validate(data);
+  };
+
+  email = (email: string): ValidationResult => {
+    const schema = Joi.string().email().required();
+    return schema.validate(email);
   };
 }
 

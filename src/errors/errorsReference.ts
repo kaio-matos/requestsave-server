@@ -70,4 +70,10 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Seu token expirou, tente novamente",
     status: 400,
   },
+
+  {
+    code: "Email:SendFailed",
+    message: "O envio de email falhou, tente novamente",
+    status: 500,
+  },
 ];

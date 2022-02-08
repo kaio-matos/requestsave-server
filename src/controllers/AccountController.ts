@@ -51,7 +51,7 @@ class AccountController {
   public async resendRegisterConfirmation(req: Request, res: Response): Promise<Response> {
     const email: string = req.body.email;
 
-    if (!email) throw new ErrorDealer("Validation:Error");
+    if (AccountValidation.email(email).error) throw new ErrorDealer("Validation:Error");
 
     const { token, expiration } = generateTokenAndExpiration(24, 20);
     const account = await prisma.account.findUnique({ where: { email } });
@@ -63,7 +63,8 @@ class AccountController {
       where: { email },
       data: { confirmedEmailExpires: expiration, confirmedEmailToken: token },
     });
-    await sendConfirmationEmail(token, email);
+    const message = await sendConfirmationEmail(token, email);
+    if (!message) throw new ErrorDealer("Email:SendFailed");
 
     return res.status(200).json(ResMsg("Email enviado com sucesso", true));
   }

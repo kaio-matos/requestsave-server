@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import path from "path";
 import fs from "fs";
 import Handlebars from "handlebars";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -15,24 +16,26 @@ const transport = nodemailer.createTransport({
 async function sendMail(
   email: string,
   replacements: { [key: string]: any },
-  pathToHtml: string
-) {
-  const filePath = path.join(
-    __dirname,
-    "../resources/mail",
-    pathToHtml + ".html"
-  );
+  pathToHtml: string,
+  header: { subject: string; text: string }
+): Promise<SMTPTransport.SentMessageInfo | undefined> {
+  const filePath = path.join(__dirname, "../resources/mail", pathToHtml + ".html");
   const source = fs.readFileSync(filePath, "utf-8").toString();
   const template = Handlebars.compile(source);
 
-  transport.sendMail({
-    to: email,
-    from: process.env.EMAIL,
+  try {
+    const message = await transport.sendMail({
+      to: email,
+      from: process.env.EMAIL,
 
-    subject: "Message title",
-    text: "Plaintext version of the message",
-    html: template(replacements),
-  });
+      subject: header.subject,
+      text: header.text,
+      html: template(replacements),
+    });
+    return message;
+  } catch (err) {
+    return undefined;
+  }
 }
 
 export { sendMail };

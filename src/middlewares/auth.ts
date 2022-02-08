@@ -24,7 +24,7 @@ export default (
     if (err) throw new ErrorDealer("User:TokenInvalid");
 
     if (typeof decoded === "string" || !decoded) throw new ErrorDealer("Server:Error");
-    req.body.account_id = decoded.account_id;
+    req.body.account_id = decoded.id;
     return next();
   });
 };

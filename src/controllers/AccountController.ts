@@ -154,6 +154,13 @@ class AccountController {
 
     return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
   }
+
+  public async checkJWT(req: Request, res: Response): Promise<Response> {
+    const id = req.body.id;
+
+    if (!id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
+    return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
+  }
 }
 
 export default new AccountController();

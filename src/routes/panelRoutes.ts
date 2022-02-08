@@ -12,7 +12,7 @@ routes.use(auth);
 
 routes.post("/client", UserController.createClient);
 routes.put("/client", UserController.editClient);
-// routes.delete("/client", UserController.deleteClient);
+routes.delete("/client", UserController.deleteClient);
 // routes.get("/client", UserController.getClients);
 
 // routes.post("/request", UserController.createRequest);

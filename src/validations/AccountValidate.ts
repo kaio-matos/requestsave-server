@@ -60,6 +60,10 @@ class AccountValidationClass {
     const schema = Joi.string().email().required();
     return schema.validate(email);
   };
+  password = (password: string): ValidationResult => {
+    const schema = Joi.string().min(this.min.password).max(this.max.password);
+    return schema.validate(password);
+  };
 }
 
 const AccountValidation = new AccountValidationClass();

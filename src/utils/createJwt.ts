@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
+import ErrorDealer from "../errors/ErrorDealer";
 
-export function createJWT(_id: string) {
-  const token = jwt.sign({ _id }, process.env.JWT_SECRET, {
+export function createJWT(id: string | number) {
+  if (!process.env.JWT_SECRET) throw new ErrorDealer("Server:Error");
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
   const tokenToVerify = `Bearer ${token}`;

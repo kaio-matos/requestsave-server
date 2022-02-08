@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import { prisma } from "../app";
 
@@ -10,6 +11,7 @@ import { ResMsg } from "../utils/ResponseMessage";
 import ErrorDealer from "../errors/ErrorDealer";
 
 import { AccountRegistrationI } from "../types/Account";
+import { createJWT } from "../utils/createJwt";
 
 class AccountController {
   public async registerAndSendEmail(req: Request, res: Response): Promise<Response> {
@@ -92,6 +94,43 @@ class AccountController {
     });
 
     return res.status(200).json(ResMsg("Email confirmado com sucesso!", true));
+  }
+
+  public async login(req: Request, res: Response): Promise<Response> {
+    const { email, password }: { email: string; password: string } = req.body;
+
+    if (AccountValidation.login({ email, password }).error) {
+      throw new ErrorDealer("Validation:Error", "Por favor descreva o email e a senha");
+    }
+
+    const account = await prisma.account.findUnique({ where: { email } });
+
+    if (!account) throw new ErrorDealer("User:DontExist", "Seu email ou senha estão errados");
+    if (!account.confirmedEmail) throw new ErrorDealer("User:EmailNotConfirmed");
+
+    const isCorrect = bcrypt.compareSync(password, account.password);
+    if (!isCorrect) throw new ErrorDealer("User:AuthenticationFailed");
+
+    const accountInfo = {
+      firstName: account.firstName,
+      lastName: account.lastName,
+      email: account.email,
+      role: account.role,
+    };
+
+    const TOKEN = createJWT(account.id);
+
+    res.cookie("token", TOKEN, {
+      // expires: new Date(Date.now() + 1000 * 60 * 60)
+      // sameSite: 'none'
+      // secure: true
+    });
+    res.cookie("role", account.role, {
+      // expires: new Date(Date.now() + 1000 * 60 * 60)
+      // sameSite: 'none'
+      // secure: true
+    });
+    return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }
 }
 

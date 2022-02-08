@@ -29,10 +29,35 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Conta não encontrada",
     status: 404,
   },
+  {
+    code: "User:AuthenticationFailed",
+    message: "Seu email ou senha estão errados",
+    status: 401,
+  },
+  {
+    code: "User:Unauthorized",
+    message: "Por favor faça o login para ter acesso",
+    status: 401,
+  },
+  {
+    code: "User:TokenBadFormatted",
+    message: "O token para autorização está mal formatado",
+    status: 400,
+  },
+  {
+    code: "User:TokenInvalid",
+    message: "O token para autorização é inválido",
+    status: 400,
+  },
 
   {
     code: "User:EmailConfirmed",
     message: "Este email já foi confirmado",
+    status: 400,
+  },
+  {
+    code: "User:EmailNotConfirmed",
+    message: "Por favor confirme seu email",
     status: 400,
   },
   {

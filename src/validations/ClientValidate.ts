@@ -14,7 +14,7 @@ class ClientValidationClass {
 
   edit = (data: unknown): ValidationResult => {
     const schema = Joi.object({
-      account_id: Joi.number().positive().required(),
+      id: Joi.number().positive().required(),
       name: Joi.string().min(3).max(50),
       email: Joi.string().email().allow(""),
     });

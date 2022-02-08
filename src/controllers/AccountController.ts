@@ -204,6 +204,32 @@ class AccountController {
     return res.status(200).json(ResMsg("Email enviado com sucesso", true));
   }
 
+  public async forgotResetPass(req: Request, res: Response): Promise<Response> {
+    const { email, token, password }: { email: string; token: string; password: string } = req.body;
+    const now = new Date();
+    if (AccountValidation.forgotResetPass({ email, token, password }).error) {
+      throw new ErrorDealer(
+        "Validation:Error",
+        "Por favor escreva corretamente email, senha e o código"
+      );
+    }
+
+    const account = await prisma.account.findUnique({ where: { email } });
+
+    if (!account) throw new ErrorDealer("User:DontExist");
+    if (!account.confirmedEmail) throw new ErrorDealer("User:EmailNotConfirmed");
+    if (token !== account.passwordResetToken) throw new ErrorDealer("User:TokenInvalid");
+    if (account.passwordResetExpires && now > account.passwordResetExpires)
+      throw new ErrorDealer("User:TokenExpired");
+
+    await prisma.account.update({
+      where: { email },
+      data: { password, passwordResetExpires: now },
+    });
+
+    return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
+  }
+
   public async resetPassword(req: Request, res: Response): Promise<Response> {
     const { id, password } = req.body;
 

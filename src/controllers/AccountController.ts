@@ -133,6 +133,13 @@ class AccountController {
     return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }
 
+  public async logout(req: Request, res: Response): Promise<Response> {
+    const id = req.body.id;
+    if (!id) throw new ErrorDealer("User:TokenInvalid");
+
+    return res.status(200).json(ResMsg("Usuário deslogado com sucesso", true));
+  }
+
   public async edit(req: Request, res: Response): Promise<Response> {
     const { id, ...newData } = req.body;
     if (!newData) {

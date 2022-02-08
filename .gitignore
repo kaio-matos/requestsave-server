@@ -2,6 +2,7 @@ node_modules
 
 # Temporary
 /src/temporary.ts
+yarn-error.log
 
 
 # Environment variables

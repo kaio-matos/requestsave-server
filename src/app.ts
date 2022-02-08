@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
 import express from "express";
+import "express-async-errors";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import accountRoutes from "./routes/accountRoutes";
 import panelRoutes from "./routes/panelRoutes";
 import { EncryptPassword } from "./dbMiddlwares/Account";
+import errorMiddleware from "./middlewares/errorMiddleware";
 
 class App {
   public express: express.Application;
@@ -17,6 +19,7 @@ class App {
     this.prisma = this.database();
     this.middlewares();
     this.routes();
+    this.errorMiddleware();
   }
 
   private middlewares(): void {
@@ -28,6 +31,10 @@ class App {
         origin: process.env.CLIENT_URL,
       })
     );
+  }
+
+  private errorMiddleware() {
+    this.express.use(errorMiddleware);
   }
 
   private database() {

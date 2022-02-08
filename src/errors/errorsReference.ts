@@ -87,4 +87,9 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este cliente já existe",
     status: 400,
   },
+  {
+    code: "Client:DontExist",
+    message: "Este cliente não existe",
+    status: 400,
+  },
 ];

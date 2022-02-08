@@ -24,7 +24,7 @@ type UnionCodesUserType =
   | "User:EmailInvalidToken"
   | "User:EmailExpiredToken";
 
-type UnionCodesClientType = "Client:Exist";
+type UnionCodesClientType = "Client:Exist" | "Client:DontExist";
 
 export type UnionCodesType =
   | UnionCodesPrismaType

@@ -12,6 +12,7 @@ import ErrorDealer from "../errors/ErrorDealer";
 
 import { AccountRegistrationI } from "../types/Account";
 import { createJWT } from "../utils/createJwt";
+import { sendMail } from "../modules/mailer";
 
 class AccountController {
   public async registerAndSendEmail(req: Request, res: Response): Promise<Response> {
@@ -171,6 +172,36 @@ class AccountController {
     if (!del) throw new ErrorDealer("User:DontExist");
 
     return res.status(200).json(ResMsg("Conta deletada com sucesso!", true));
+  }
+
+  public async forgotSendEmail(req: Request, res: Response): Promise<Response> {
+    const { email }: { email: string } = req.body;
+
+    if (AccountValidation.email(email).error) {
+      throw new ErrorDealer("Validation:Error", "Por favor escreva o email corretamente");
+    }
+
+    const account = await prisma.account.findUnique({ where: { email } });
+    if (!account) throw new ErrorDealer("User:DontExist");
+
+    const { token, expiration } = generateTokenAndExpiration(1, 7);
+
+    const mail = await sendMail(email, { token }, "auth/forgot_password", {
+      subject: "Esqueceu a senha? Utilize este link para recuperá-la",
+      text: "Caso não tenha sido você que fez este pedido apenas ignore",
+    });
+
+    if (!mail) throw new ErrorDealer("Email:SendFailed");
+
+    await prisma.account.update({
+      where: { email },
+      data: {
+        passwordResetToken: token,
+        passwordResetExpires: expiration,
+      },
+    });
+
+    return res.status(200).json(ResMsg("Email enviado com sucesso", true));
   }
 }
 

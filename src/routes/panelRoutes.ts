@@ -1,17 +1,16 @@
 import { Router } from "express";
 // import AdminController from "../controllers/Admin/AdminController";
 
-// import UserController from "../controllers/UserController";
-// import auth from "../middlewares/auth";
-// import createModels from "../middlewares/createModels";
+import UserController from "../controllers/UserController";
+import auth from "../middlewares/auth";
 // import roleCheck from "../middlewares/roleCheck";
 
 const routes = Router();
 
 // Checamos o usuário, e então criamos os seus respectivos modelos para alteração no DB
-// routes.use(auth, createModels);
+routes.use(auth);
 
-// routes.post("/client", UserController.createClient);
+routes.post("/client", UserController.createClient);
 // routes.patch("/client", UserController.editClient);
 // routes.delete("/client", UserController.deleteClient);
 // routes.get("/client", UserController.getClients);

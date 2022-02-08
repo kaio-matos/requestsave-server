@@ -6,7 +6,6 @@ import { AccountValidation } from "../validations/AccountValidate";
 import { generateTokenAndExpiration } from "../utils/generateTokenAndExpiration";
 import { sendConfirmationEmail } from "../utils/sendConfirmationEmail";
 import { ResMsg } from "../utils/ResponseMessage";
-import { errorHelper } from "../utils/errorHelper";
 
 import ErrorDealer from "../errors/ErrorDealer";
 
@@ -53,13 +52,15 @@ class AccountController {
     if (!email) throw new ErrorDealer("Validation:Error");
 
     const { token, expiration } = generateTokenAndExpiration(24, 20);
-    const account = await prisma.account.updateMany({
-      where: { AND: [{ email: { equals: email } }, { confirmedEmail: { equals: false } }] },
+    const account = await prisma.account.findUnique({ where: { email } });
+
+    if (!account) throw new ErrorDealer("User:DontExist");
+    if (account.confirmedEmail) throw new ErrorDealer("User:EmailConfirmed");
+
+    await prisma.account.update({
+      where: { email },
       data: { confirmedEmailExpires: expiration, confirmedEmailToken: token },
     });
-
-    if (account.count === 0) throw new ErrorDealer("User:EmailConfirmed");
-
     await sendConfirmationEmail(token, email);
 
     return res.status(200).json(ResMsg("Email enviado com sucesso", true));

@@ -203,6 +203,24 @@ class AccountController {
 
     return res.status(200).json(ResMsg("Email enviado com sucesso", true));
   }
+
+  public async resetPassword(req: Request, res: Response): Promise<Response> {
+    const { id, password } = req.body;
+
+    if (AccountValidation.password(password).error) {
+      throw new ErrorDealer(
+        "Validation:Error",
+        "Por favor use uma senha com pelo menos seis dígitos"
+      );
+    }
+
+    const account = await prisma.account.findUnique({ where: { id } });
+    if (!account) throw new ErrorDealer("User:DontExist");
+
+    await prisma.account.update({ where: { id }, data: { password } });
+
+    return res.status(200).json(ResMsg("Senha editada com sucesso!", true));
+  }
 }
 
 export default new AccountController();

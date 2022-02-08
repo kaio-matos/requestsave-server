@@ -20,7 +20,7 @@ export default (
   const [scheme, token] = parts;
   if (!/^Bearer$/i.test(scheme)) throw new ErrorDealer("User:TokenBadFormatted");
 
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) throw new ErrorDealer("User:TokenInvalid");
 
     if (typeof decoded === "string" || !decoded) throw new ErrorDealer("Server:Error");

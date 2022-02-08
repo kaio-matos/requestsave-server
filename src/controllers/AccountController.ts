@@ -161,6 +161,16 @@ class AccountController {
     if (!id) throw new ErrorDealer("User:Unauthorized", "JWT não foi identificado");
     return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
   }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const id = req.body.id;
+
+    const del = await prisma.account.delete({ where: { id } });
+    // Missing | Delete phoneNumber linked with this account
+    if (!del) throw new ErrorDealer("User:DontExist");
+
+    return res.status(200).json(ResMsg("Conta deletada com sucesso!", true));
+  }
 }
 
 export default new AccountController();

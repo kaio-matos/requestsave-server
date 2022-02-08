@@ -21,7 +21,7 @@ export const errorsReference: ErrorReferenceType[] = [
 
   {
     code: "User:Exist",
-    message: "Já existe um usuário com este email",
+    message: "Já existe um usuário com este email ou utilizando o mesmo número",
     status: 409,
   },
   {

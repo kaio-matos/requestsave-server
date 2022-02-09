@@ -66,5 +66,20 @@ class RequestController {
 
     return res.status(200).json(ResMsg("Pedido deletado com sucesso!", true));
   }
+
+  public async get(req: Request, res: Response): Promise<Response> {
+    const account_id = req.body.account_id;
+    let name = req.query.name;
+
+    const REQUESTS = await prisma.request.findMany({
+      where: {
+        AND: [{ title: { contains: name ? String(name) : "" } }, { account_id }],
+      },
+    });
+
+    if (!REQUESTS.length)
+      throw new ErrorDealer("Request:DontExist", "Nenhum pedido foi encontrado");
+    return res.status(200).json(ResMsg("Produtos encontrados com sucesso", REQUESTS));
+  }
 }
 export default new RequestController();

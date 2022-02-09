@@ -14,6 +14,7 @@ export class UserController {
   getProducts = ProductController.get;
 
   createRequest = RequestController.create;
+  editRequest = RequestController.edit;
 }
 
 export default new UserController();

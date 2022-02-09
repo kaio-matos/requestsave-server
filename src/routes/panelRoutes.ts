@@ -1,9 +1,9 @@
 import { Router } from "express";
-// import AdminController from "../controllers/Admin/AdminController";
+import AdminController from "../controllers/admin/AdminController";
 
 import UserController from "../controllers/UserController";
 import auth from "../middlewares/auth";
-// import roleCheck from "../middlewares/roleCheck";
+import roleCheck from "../middlewares/roleCheck";
 
 const routes = Router();
 
@@ -27,7 +27,7 @@ routes.get("/product", UserController.getProducts);
 
 // routes.patch("/users", roleCheck, AdminController.editAccountRole);
 // routes.delete("/users", roleCheck, AdminController.deleteAccount);
-// routes.get("/users", roleCheck, AdminController.getAccounts);
+routes.get("/users", roleCheck, AdminController.getAccounts);
 
 // routes.post("/phonenumber", roleCheck, AdminController.createPhoneNumber);
 // routes.patch("/phonenumber", roleCheck, AdminController.editPhoneNumber);

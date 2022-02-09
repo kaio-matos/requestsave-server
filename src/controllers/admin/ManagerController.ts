@@ -39,6 +39,19 @@ class ManagerController {
 
     return res.status(200).json(ResMsg("Cargo alterado com sucesso!", true));
   }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { account_id, id } = req.body;
+    if (ManagerValidation.id(id).error) throw new ErrorDealer("Validation:Error");
+
+    const account = await prisma.account.findUnique({ where: { id } });
+    if (!account) throw new ErrorDealer("User:DontExist");
+
+    const deleted = await prisma.account.delete({ where: { id } });
+    await prisma.accountTie.delete({ where: { id: deleted.accountTie_id } });
+
+    return res.status(200).json(ResMsg("Conta deletada com sucesso!", true));
+  }
 }
 
 export default new ManagerController();

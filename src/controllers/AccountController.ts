@@ -145,15 +145,14 @@ class AccountController {
 
     async edit(req: Request, res: Response): Promise<Response> {
       const { account_id, ...newData } = req.body;
-      if (!newData) {
-        throw new ErrorDealer("Validation:Error", "Por favor escreva o email para a confirmação");
-      }
+      if (!newData) throw new ErrorDealer("Validation:Error");
+
       if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
       const account = await prisma.account.findUnique({ where: { id: account_id } });
       if (!account) throw new ErrorDealer("User:DontExist");
 
-      await prisma.account.update({ where: { id: account_id }, data: { ...newData } });
+      await prisma.account.update({ where: { id: account_id }, data: newData });
 
       return res.status(200).json(ResMsg("Conta editada com sucesso!", true));
     },

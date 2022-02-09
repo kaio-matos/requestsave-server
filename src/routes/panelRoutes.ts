@@ -25,7 +25,7 @@ routes.put("/product", UserController.editProduct);
 routes.delete("/product", UserController.deleteProduct);
 routes.get("/product", UserController.getProducts);
 
-// routes.patch("/users", roleCheck, AdminController.editAccountRole);
+routes.put("/users", roleCheck, AdminController.editAccountRole);
 // routes.delete("/users", roleCheck, AdminController.deleteAccount);
 routes.get("/users", roleCheck, AdminController.getAccounts);
 

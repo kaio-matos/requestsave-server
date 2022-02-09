@@ -17,7 +17,7 @@ routes.get("/client", UserController.getClients);
 
 routes.post("/request", UserController.createRequest);
 routes.put("/request", UserController.editRequest);
-// routes.delete("/request", UserController.deleteRequest);
+routes.delete("/request", UserController.deleteRequest);
 // routes.get("/request", UserController.getRequests);
 
 routes.post("/product", UserController.createProduct);

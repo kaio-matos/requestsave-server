@@ -49,5 +49,19 @@ class ClientController {
 
     return res.status(200).json(ResMsg("Cliente deletado com sucesso!", true));
   }
+
+  public async get(req: Request, res: Response): Promise<Response> {
+    const account_id = req.body.account_id;
+    let name = req.query.name;
+
+    const CLIENTS = await prisma.client.findMany({
+      where: {
+        AND: [{ name: { contains: name ? String(name) : "" } }, { account_id }],
+      },
+    });
+
+    if (!CLIENTS.length) throw new ErrorDealer("Client:DontExist", "Nenhum cliente foi encontrado");
+    return res.status(201).json(ResMsg("Clientes encontrados com sucesso", CLIENTS));
+  }
 }
 export default new ClientController();

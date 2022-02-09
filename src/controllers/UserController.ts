@@ -9,6 +9,7 @@ export class UserController {
 
   createProduct = ProductController.create;
   editProduct = ProductController.edit;
+  deleteProduct = ProductController.delete;
 }
 
 export default new UserController();

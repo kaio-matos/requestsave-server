@@ -138,6 +138,13 @@
   dependencies:
     handlebars "*"
 
+"@types/joi-phone-number@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@types/joi-phone-number/-/joi-phone-number-5.0.3.tgz#5b5f6451af000f37753e5b313d7b0b6d86f5c020"
+  integrity sha512-6H7GFQb9qE46IGFSoJYj/4DiLe/K3P1EG48Lx/6UP93ofwtq3fj+HP/G1/XQDuEEwr96wpFy+b3BpM6E6KEzRg==
+  dependencies:
+    joi "^17.3.0"
+
 "@types/joi@^17.2.3":
   version "17.2.3"
   resolved "https://registry.yarnpkg.com/@types/joi/-/joi-17.2.3.tgz#b7768ed9d84f1ebd393328b9f97c1cf3d2b94798"
@@ -412,6 +419,11 @@ fresh@0.5.2:
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
   integrity sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
 
+google-libphonenumber@3.2.26:
+  version "3.2.26"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.26.tgz#c5fcaf793892cd079edb5a3df191fdc955fb9587"
+  integrity sha512-qyjAKef1oC2vG81RNy1f5Mk9lYE/H3HC885DCOlFs9ca3QfsqEUnXWOTPXTgEtHnTq1x3vpQgtDbX3Vba/o2ow==
+
 handlebars@*, handlebars@^4.7.7:
   version "4.7.7"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
@@ -452,7 +464,14 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-joi@*, joi@^17.6.0:
+joi-phone-number@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/joi-phone-number/-/joi-phone-number-5.1.0.tgz#2db5b532c4598eb56121a9b91e96dd06a4219a98"
+  integrity sha512-8jjObw+WnuSJ4BDbEwPWWM7aowJszu8w1sALQVbdipd+e6KzETzP7hdioVqVr6z3IVRWahiOw5Kn27Y7kekzjQ==
+  dependencies:
+    google-libphonenumber "3.2.26"
+
+joi@*, joi@^17.3.0, joi@^17.6.0:
   version "17.6.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.6.0.tgz#0bb54f2f006c09a96e75ce687957bd04290054b2"
   integrity sha512-OX5dG6DTbcr/kbMFj0KGYxuew69HPcAE3K/sZpEV2nP6e/j/C0HV+HNiBPCASxdx5T7DMoa0s8UeHWMnb6n2zw==

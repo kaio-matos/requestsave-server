@@ -32,7 +32,7 @@ class ManagerController {
     const account = await prisma.account.findUnique({ where: { id: data.id } });
     if (!account) throw new ErrorDealer("User:DontExist");
 
-    const a = await prisma.account.update({
+    await prisma.account.update({
       where: { id: data.id },
       data: { role: data.role },
     });

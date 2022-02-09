@@ -29,9 +29,9 @@ routes.put("/users", roleCheck, AdminController.editAccountRole);
 routes.delete("/users", roleCheck, AdminController.deleteAccount);
 routes.get("/users", roleCheck, AdminController.getAccounts);
 
-// routes.post("/phonenumber", roleCheck, AdminController.createPhoneNumber);
-// routes.patch("/phonenumber", roleCheck, AdminController.editPhoneNumber);
-// routes.delete("/phonenumber", roleCheck, AdminController.deletePhoneNumber);
-// routes.get("/phonenumber", roleCheck, AdminController.getPhoneNumber);
+routes.post("/accountie", roleCheck, AdminController.createAccountTie);
+// routes.put("/accountie", roleCheck, AdminController.editAccountTie);
+// routes.delete("/accountie", roleCheck, AdminController.deleteAccountTie);
+// routes.get("/accountie", roleCheck, AdminController.getAccountTie);
 
 export default routes;

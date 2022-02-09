@@ -8,7 +8,7 @@ class AdminController {
   // getPhoneNumber = PhoneNumberController.get;
 
   editAccountRole = ManagerController.editRole;
-  // deleteAccount = AccountControllerADM.delete;
+  deleteAccount = ManagerController.delete;
   getAccounts = ManagerController.get;
 }
 

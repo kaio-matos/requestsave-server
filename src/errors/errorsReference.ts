@@ -114,4 +114,9 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este pedido não existe",
     status: 404,
   },
+  {
+    code: "Request:SomeDocDontExist",
+    message: "Algum dos itens seguintes não existe: pedido ou cliente ou produto",
+    status: 404,
+  },
 ];

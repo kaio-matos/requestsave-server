@@ -26,6 +26,7 @@ type UnionCodesUserType =
 
 type UnionCodesClientType = "Client:Exist" | "Client:DontExist";
 type UnionCodesProductType = "Product:Exist" | "Product:DontExist";
+type UnionCodesRequestType = "Request:Exist" | "Request:DontExist";
 
 export type UnionCodesType =
   | UnionCodesPrismaType
@@ -35,4 +36,5 @@ export type UnionCodesType =
   | UnionCodesPhoneNumberType
   | UnionCodesUserType
   | UnionCodesClientType
-  | UnionCodesProductType;
+  | UnionCodesProductType
+  | UnionCodesRequestType;

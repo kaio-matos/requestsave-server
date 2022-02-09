@@ -103,4 +103,15 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este produto não existe",
     status: 404,
   },
+
+  {
+    code: "Request:Exist",
+    message: "Este pedido já existe",
+    status: 400,
+  },
+  {
+    code: "Request:DontExist",
+    message: "Este pedido não existe",
+    status: 404,
+  },
 ];

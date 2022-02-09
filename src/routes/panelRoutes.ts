@@ -16,7 +16,7 @@ routes.delete("/client", UserController.deleteClient);
 routes.get("/client", UserController.getClients);
 
 routes.post("/request", UserController.createRequest);
-// routes.patch("/request", UserController.editRequest);
+routes.put("/request", UserController.editRequest);
 // routes.delete("/request", UserController.deleteRequest);
 // routes.get("/request", UserController.getRequests);
 

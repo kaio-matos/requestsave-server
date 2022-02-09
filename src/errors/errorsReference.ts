@@ -92,4 +92,15 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este cliente não existe",
     status: 404,
   },
+
+  {
+    code: "Product:Exist",
+    message: "Este produto já existe",
+    status: 400,
+  },
+  {
+    code: "Product:DontExist",
+    message: "Este produto não existe",
+    status: 404,
+  },
 ];

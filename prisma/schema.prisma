@@ -11,9 +11,12 @@ datasource db {
 }
 
 model AccountTie {
-  id          Int      @id @default(autoincrement())
-  phoneNumber String   @unique
-  account     Account?
+  id          Int    @id @default(autoincrement())
+  phoneNumber String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account   Account?
 }
 
 model Account {

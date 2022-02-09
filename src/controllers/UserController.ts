@@ -8,6 +8,7 @@ export class UserController {
   getClients = ClientController.get;
 
   createProduct = ProductController.create;
+  editProduct = ProductController.edit;
 }
 
 export default new UserController();

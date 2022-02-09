@@ -36,6 +36,7 @@ model Account {
 
   clients  Client[]
   products Product[]
+  requests Request[]
 }
 
 model Client {
@@ -78,9 +79,11 @@ model Request {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  account Account @relation(fields: [account_id], references: [id])
   product Product @relation(fields: [product_id], references: [id])
   client  Client  @relation(fields: [client_id], references: [id])
 
+  account_id Int
   product_id Int
   client_id  Int
 }

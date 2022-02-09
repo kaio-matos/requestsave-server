@@ -40,6 +40,11 @@ export const errorsReference: ErrorReferenceType[] = [
     status: 401,
   },
   {
+    code: "User:Forbidden",
+    message: "Acesso negado",
+    status: 403,
+  },
+  {
     code: "User:TokenBadFormatted",
     message: "O token para autorização está mal formatado",
     status: 400,

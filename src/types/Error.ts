@@ -22,7 +22,8 @@ type UnionCodesUserType =
   | "User:EmailConfirmed"
   | "User:EmailNotConfirmed"
   | "User:EmailInvalidToken"
-  | "User:EmailExpiredToken";
+  | "User:EmailExpiredToken"
+  | "User:Forbidden";
 
 type UnionCodesClientType = "Client:Exist" | "Client:DontExist";
 type UnionCodesProductType = "Product:Exist" | "Product:DontExist";

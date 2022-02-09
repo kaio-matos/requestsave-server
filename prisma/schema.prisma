@@ -31,7 +31,7 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  accountTie    AccountTie @relation(fields: [accountTie_id], references: [id])
+  accountTie    AccountTie @relation(fields: [accountTie_id], references: [id], onDelete: Cascade)
   accountTie_id Int        @unique
 
   clients  Client[]
@@ -47,7 +47,7 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  account    Account @relation(fields: [account_id], references: [id])
+  account    Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id Int
 
   requests Request[]
@@ -61,7 +61,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  account    Account @relation(fields: [account_id], references: [id])
+  account    Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id Int
 
   requests Request[]
@@ -79,9 +79,9 @@ model Request {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  account Account @relation(fields: [account_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
-  client  Client  @relation(fields: [client_id], references: [id])
+  account Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  client  Client  @relation(fields: [client_id], references: [id], onDelete: Cascade)
 
   account_id Int
   product_id Int

@@ -1,11 +1,11 @@
-// import PhoneNumberController from "./PhoneNumberController";
+import AccountTie from "./AccountTie";
 import ManagerController from "./ManagerController";
 
 class AdminController {
-  // createPhoneNumber = PhoneNumberController.create;
-  // editPhoneNumber = PhoneNumberController.edit;
-  // deletePhoneNumber = PhoneNumberController.delete;
-  // getPhoneNumber = PhoneNumberController.get;
+  createAccountTie = AccountTie.create;
+  // editAccountTie = AccountTie.edit;
+  // deleteAccountTie = AccountTie.delete;
+  // getAccountTie = AccountTie.get;
 
   editAccountRole = ManagerController.editRole;
   deleteAccount = ManagerController.delete;

@@ -37,5 +37,16 @@ class ProductController {
 
     return res.status(200).json(ResMsg("Produto editado com sucesso!", true));
   }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { account_id, id } = req.body;
+    if (!id) throw new ErrorDealer("Validation:Error");
+    if (ProductValidation.id(id).error) throw new ErrorDealer("Validation:Error");
+
+    const deleted = await prisma.product.deleteMany({ where: { AND: [{ id }, { account_id }] } });
+    if (deleted.count === 0) throw new ErrorDealer("Product:DontExist");
+
+    return res.status(200).json(ResMsg("Produto deletado com sucesso!", true));
+  }
 }
 export default new ProductController();

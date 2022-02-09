@@ -23,6 +23,7 @@ class RequestValidationClass {
 
   edit = (data: unknown): ValidationResult => {
     const schema = Joi.object({
+      account_id: Joi.number().positive().required(),
       id: Joi.number().positive(),
       product_id: Joi.number().positive(),
       client_id: Joi.number().positive(),

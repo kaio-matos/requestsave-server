@@ -14,6 +14,7 @@ class RequestValidationClass {
       status: Joi.string().valid(...this.STATUS_ARRAY),
       price: Joi.number().min(0).required(),
       paidOut: Joi.number().min(0),
+      balance: Joi.number().min(0),
       expiresIn: Joi.date().required(),
     });
 
@@ -22,9 +23,17 @@ class RequestValidationClass {
 
   edit = (data: unknown): ValidationResult => {
     const schema = Joi.object({
-      id: Joi.number().positive().required(),
-      name: Joi.string().min(3).max(50),
-      basePrice: Joi.number().strict().positive(),
+      id: Joi.number().positive(),
+      product_id: Joi.number().positive(),
+      client_id: Joi.number().positive(),
+
+      title: Joi.string().min(3).max(50),
+      status: Joi.string().valid(...this.STATUS_ARRAY),
+
+      price: Joi.number().min(0),
+      paidOut: Joi.number().min(0),
+      balance: Joi.number().min(0),
+      expiresIn: Joi.date(),
     });
 
     return schema.validate(data);

@@ -48,5 +48,20 @@ class ProductController {
 
     return res.status(200).json(ResMsg("Produto deletado com sucesso!", true));
   }
+
+  public async get(req: Request, res: Response): Promise<Response> {
+    const account_id = req.body.account_id;
+    let name = req.query.name;
+
+    const PRODUCTS = await prisma.product.findMany({
+      where: {
+        AND: [{ name: { contains: name ? String(name) : "" } }, { account_id }],
+      },
+    });
+
+    if (!PRODUCTS.length)
+      throw new ErrorDealer("Product:DontExist", "Nenhum cliente foi encontrado");
+    return res.status(200).json(ResMsg("Produtos encontrados com sucesso", PRODUCTS));
+  }
 }
 export default new ProductController();

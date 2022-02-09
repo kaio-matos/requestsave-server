@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 export const EncryptPassword: Prisma.Middleware = async (params, next) => {
-  if (params.model === "Account" && params.args.data?.password) {
+  if (params.model === "Account" && params.args?.data?.password) {
     let hash = "";
 
     switch (params.action) {

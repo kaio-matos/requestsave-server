@@ -1,0 +1,41 @@
+import Joi, { ValidationResult } from "joi";
+import { RequestBasicsType } from "../types/Request";
+
+class RequestValidationClass {
+  STATUS_ARRAY = ["TODO", "GRAPHIC", "DEALING", "CANCELLED", "COMPLETED"];
+
+  create = (data: RequestBasicsType): ValidationResult => {
+    const schema = Joi.object({
+      account_id: Joi.number().positive().required(),
+      product_id: Joi.number().positive().required(),
+      client_id: Joi.number().positive().required(),
+
+      title: Joi.string().min(3).max(50).required(),
+      status: Joi.string().valid(...this.STATUS_ARRAY),
+      price: Joi.number().min(0).required(),
+      paidOut: Joi.number().min(0),
+      expiresIn: Joi.date().required(),
+    });
+
+    return schema.validate(data);
+  };
+
+  edit = (data: unknown): ValidationResult => {
+    const schema = Joi.object({
+      id: Joi.number().positive().required(),
+      name: Joi.string().min(3).max(50),
+      basePrice: Joi.number().strict().positive(),
+    });
+
+    return schema.validate(data);
+  };
+
+  id = (id: string): ValidationResult => {
+    const schema = Joi.number().positive().required();
+    return schema.validate(id);
+  };
+}
+
+const RequestValidation = new RequestValidationClass();
+
+export { RequestValidation };

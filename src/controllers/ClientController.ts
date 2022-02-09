@@ -21,7 +21,7 @@ class ClientController {
     if (clients?.length) throw new ErrorDealer("Client:Exist");
 
     const CLIENT = await prisma.client.create({ data: data });
-    return res.status(200).json(ResMsg("Cliente criado com sucesso", CLIENT));
+    return res.status(201).json(ResMsg("Cliente criado com sucesso", CLIENT));
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {

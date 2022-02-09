@@ -21,7 +21,7 @@ routes.get("/client", UserController.getClients);
 // routes.get("/request", UserController.getRequests);
 
 routes.post("/product", UserController.createProduct);
-// routes.patch("/product", UserController.editProduct);
+routes.put("/product", UserController.editProduct);
 // routes.delete("/product", UserController.deleteProduct);
 // routes.get("/product", UserController.getProducts);
 

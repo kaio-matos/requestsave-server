@@ -124,4 +124,15 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Algum dos itens seguintes não existe: pedido ou cliente ou produto",
     status: 404,
   },
+
+  {
+    code: "AccountTie:Exist",
+    message: "Este vínculo já existe",
+    status: 400,
+  },
+  {
+    code: "AccountTie:DontExist",
+    message: "Este vínculo não existe",
+    status: 404,
+  },
 ];

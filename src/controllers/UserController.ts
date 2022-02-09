@@ -1,5 +1,6 @@
 import ClientController from "./ClientController";
 import ProductController from "./ProductController";
+import RequestController from "./RequestController";
 
 export class UserController {
   createClient = ClientController.create;
@@ -11,6 +12,8 @@ export class UserController {
   editProduct = ProductController.edit;
   deleteProduct = ProductController.delete;
   getProducts = ProductController.get;
+
+  createRequest = RequestController.create;
 }
 
 export default new UserController();

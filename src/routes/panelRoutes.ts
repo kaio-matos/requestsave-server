@@ -22,7 +22,7 @@ routes.get("/client", UserController.getClients);
 
 routes.post("/product", UserController.createProduct);
 routes.put("/product", UserController.editProduct);
-// routes.delete("/product", UserController.deleteProduct);
+routes.delete("/product", UserController.deleteProduct);
 // routes.get("/product", UserController.getProducts);
 
 // routes.patch("/users", roleCheck, AdminController.editAccountRole);

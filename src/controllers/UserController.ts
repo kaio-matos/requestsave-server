@@ -10,6 +10,7 @@ export class UserController {
   createProduct = ProductController.create;
   editProduct = ProductController.edit;
   deleteProduct = ProductController.delete;
+  getProducts = ProductController.get;
 }
 
 export default new UserController();

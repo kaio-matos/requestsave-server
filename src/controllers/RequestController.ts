@@ -55,5 +55,16 @@ class RequestController {
 
     return res.status(200).json(ResMsg("Pedido editado com sucesso!", true));
   }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { account_id, id } = req.body;
+    if (!id) throw new ErrorDealer("Validation:Error");
+    if (RequestValidation.id(id).error) throw new ErrorDealer("Validation:Error");
+
+    const deleted = await prisma.request.deleteMany({ where: { AND: [{ id }, { account_id }] } });
+    if (deleted.count === 0) throw new ErrorDealer("Request:DontExist");
+
+    return res.status(200).json(ResMsg("Pedido deletado com sucesso!", true));
+  }
 }
 export default new RequestController();

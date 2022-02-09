@@ -28,5 +28,32 @@ class RequestController {
     const REQUEST = await prisma.request.create({ data: data });
     return res.status(201).json(ResMsg("Pedido criado com sucesso", REQUEST));
   }
+
+  public async edit(req: Request, res: Response): Promise<Response> {
+    const newData = req.body;
+
+    if (!newData) throw new ErrorDealer("Validation:Error");
+    if (RequestValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+
+    const updated = await prisma.request.updateMany({
+      where: {
+        AND: [
+          { id: newData.id },
+          {
+            account: {
+              id: newData.account_id,
+              clients: { some: { id: newData.client_id } },
+              products: { some: { id: newData.product_id } },
+            },
+          },
+        ],
+      },
+      data: newData,
+    });
+
+    if (updated.count === 0) throw new ErrorDealer("Request:SomeDocDontExist");
+
+    return res.status(200).json(ResMsg("Pedido editado com sucesso!", true));
+  }
 }
 export default new RequestController();

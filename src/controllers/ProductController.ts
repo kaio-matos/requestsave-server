@@ -24,13 +24,13 @@ class ProductController {
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {
-    const { account_id, ...newData } = req.body;
+    const newData = req.body;
 
     if (!newData) throw new ErrorDealer("Validation:Error");
     if (ProductValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
     const updated = await prisma.product.updateMany({
-      where: { AND: [{ id: newData.id }, { account_id }] },
+      where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },
       data: newData,
     });
     if (updated.count === 0) throw new ErrorDealer("Product:DontExist");

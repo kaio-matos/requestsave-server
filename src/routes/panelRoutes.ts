@@ -20,7 +20,7 @@ routes.get("/client", UserController.getClients);
 // routes.delete("/request", UserController.deleteRequest);
 // routes.get("/request", UserController.getRequests);
 
-// routes.post("/product", UserController.createProduct);
+routes.post("/product", UserController.createProduct);
 // routes.patch("/product", UserController.editProduct);
 // routes.delete("/product", UserController.deleteProduct);
 // routes.get("/product", UserController.getProducts);

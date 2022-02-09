@@ -15,6 +15,7 @@ export class UserController {
 
   createRequest = RequestController.create;
   editRequest = RequestController.edit;
+  deleteRequest = RequestController.delete;
 }
 
 export default new UserController();

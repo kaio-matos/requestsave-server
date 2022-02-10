@@ -4,7 +4,7 @@ import ManagerController from "./ManagerController";
 class AdminController {
   createAccountTie = AccountTie.create;
   editAccountTie = AccountTie.edit;
-  // deleteAccountTie = AccountTie.delete;
+  deleteAccountTie = AccountTie.delete;
   // getAccountTie = AccountTie.get;
 
   editAccountRole = ManagerController.editRole;

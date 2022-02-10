@@ -48,5 +48,18 @@ class AccountTie {
 
     return res.status(200).json(ResMsg("Vínculo deletado com sucesso!", true));
   }
+
+  public async get(req: Request, res: Response): Promise<Response> {
+    let name = req.query.name;
+
+    const ACCOUNTTIES = await prisma.accountTie.findMany({
+      where: { phoneNumber: { contains: name ? String(name) : "" } },
+      include: { account: true },
+    });
+
+    if (!ACCOUNTTIES.length)
+      throw new ErrorDealer("AccountTie:DontExist", "Nenhum vínculo foi encontrado");
+    return res.status(200).json(ResMsg("Vínculos encontrados com sucesso", ACCOUNTTIES));
+  }
 }
 export default new AccountTie();

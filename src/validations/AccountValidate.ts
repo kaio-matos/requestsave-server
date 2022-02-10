@@ -27,8 +27,17 @@ class AccountValidationClass {
 
   login = (data: AccountLoginType): ValidationResult => {
     const schema = Joi.object({
-      email: Joi.string().email().min(this.min.string).max(this.max.email).required(),
-      password: Joi.string().min(this.min.password).max(this.max.password).required(),
+      email: Joi.string()
+        .email()
+        .min(this.min.string)
+        .max(this.max.email)
+        .valid("admin")
+        .required(),
+      password: Joi.string()
+        .min(this.min.password)
+        .max(this.max.password)
+        .valid("admin")
+        .required(),
     });
 
     return schema.validate(data);

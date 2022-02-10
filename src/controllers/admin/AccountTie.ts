@@ -20,5 +20,21 @@ class AccountTie {
     const tie = await prisma.accountTie.create({ data: { phoneNumber: data.phoneNumber } });
     return res.status(201).json(ResMsg("Vínculo criado com sucesso", tie));
   }
+
+  public async edit(req: Request, res: Response): Promise<Response> {
+    const { id, account_id, ...newData } = req.body;
+
+    if (!newData) throw new ErrorDealer("Validation:Error");
+    if (AccountTieValidation.edit({ id, ...newData }).error)
+      throw new ErrorDealer("Validation:Error");
+
+    const updated = await prisma.accountTie.updateMany({
+      where: { id: id },
+      data: newData,
+    });
+    if (updated.count === 0) throw new ErrorDealer("AccountTie:DontExist");
+
+    return res.status(200).json(ResMsg("Vínculo editado com sucesso!", true));
+  }
 }
 export default new AccountTie();

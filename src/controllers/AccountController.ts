@@ -65,8 +65,9 @@ class AccountController {
         include: { account: { select: { email: true } } },
       });
 
-      if (!accountTie?.phoneNumber) throw new ErrorDealer("PhoneNumber:DontExist");
-      if (accountTie?.account?.email) throw new ErrorDealer("User:Exist");
+      if (!accountTie) throw new ErrorDealer("AccountTie:DontExist");
+      if (!accountTie.phoneNumber) throw new ErrorDealer("AccountTie:DontExist");
+      if (accountTie.account?.email) throw new ErrorDealer("User:Exist");
 
       const { token, expiration } = generateTokenAndExpiration(24, 20);
 

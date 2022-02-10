@@ -7,8 +7,8 @@ import cors from "cors";
 
 import accountRoutes from "./routes/accountRoutes";
 import panelRoutes from "./routes/panelRoutes";
-import { EncryptPassword } from "./dbMiddlwares/Account";
 import errorMiddleware from "./middlewares/errorMiddleware";
+import { Database } from "./database/Database";
 
 class App {
   public express: express.Application;
@@ -38,10 +38,7 @@ class App {
   }
 
   private database() {
-    const prisma = new PrismaClient();
-
-    prisma.$use(EncryptPassword);
-
+    const prisma = new Database().prisma;
     return prisma;
   }
 

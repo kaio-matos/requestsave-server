@@ -30,7 +30,7 @@ routes.delete("/users", roleCheck, AdminController.deleteAccount);
 routes.get("/users", roleCheck, AdminController.getAccounts);
 
 routes.post("/accountie", roleCheck, AdminController.createAccountTie);
-// routes.put("/accountie", roleCheck, AdminController.editAccountTie);
+routes.put("/accountie", roleCheck, AdminController.editAccountTie);
 // routes.delete("/accountie", roleCheck, AdminController.deleteAccountTie);
 // routes.get("/accountie", roleCheck, AdminController.getAccountTie);
 

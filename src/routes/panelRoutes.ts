@@ -31,7 +31,7 @@ routes.get("/users", roleCheck, AdminController.getAccounts);
 
 routes.post("/accountie", roleCheck, AdminController.createAccountTie);
 routes.put("/accountie", roleCheck, AdminController.editAccountTie);
-// routes.delete("/accountie", roleCheck, AdminController.deleteAccountTie);
+routes.delete("/accountie", roleCheck, AdminController.deleteAccountTie);
 // routes.get("/accountie", roleCheck, AdminController.getAccountTie);
 
 export default routes;

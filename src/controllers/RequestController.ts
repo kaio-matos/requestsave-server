@@ -77,8 +77,6 @@ class RequestController {
       },
     });
 
-    if (!REQUESTS.length)
-      throw new ErrorDealer("Request:DontExist", "Nenhum pedido foi encontrado");
     return res.status(200).json(ResMsg("Produtos encontrados com sucesso", REQUESTS));
   }
 }

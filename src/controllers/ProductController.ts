@@ -59,8 +59,6 @@ class ProductController {
       },
     });
 
-    if (!PRODUCTS.length)
-      throw new ErrorDealer("Product:DontExist", "Nenhum cliente foi encontrado");
     return res.status(200).json(ResMsg("Produtos encontrados com sucesso", PRODUCTS));
   }
 }

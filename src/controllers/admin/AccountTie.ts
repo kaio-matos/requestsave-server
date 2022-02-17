@@ -57,8 +57,8 @@ class AccountTie {
       include: { account: true },
     });
 
-    if (!ACCOUNTTIES.length)
-      throw new ErrorDealer("AccountTie:DontExist", "Nenhum vínculo foi encontrado");
+    // if (!ACCOUNTTIES.length)
+    //   throw new ErrorDealer("AccountTie:DontExist", "Nenhum vínculo foi encontrado");
     return res.status(200).json(ResMsg("Vínculos encontrados com sucesso", ACCOUNTTIES));
   }
 }

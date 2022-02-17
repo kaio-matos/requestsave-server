@@ -60,7 +60,6 @@ class ClientController {
       },
     });
 
-    if (!CLIENTS.length) throw new ErrorDealer("Client:DontExist", "Nenhum cliente foi encontrado");
     return res.status(200).json(ResMsg("Clientes encontrados com sucesso", CLIENTS));
   }
 }

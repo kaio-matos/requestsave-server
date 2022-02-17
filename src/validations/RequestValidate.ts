@@ -35,6 +35,8 @@ class RequestValidationClass {
       paidOut: Joi.number().min(0),
       balance: Joi.number().min(0),
       expiresIn: Joi.date(),
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
 
     return schema.validate(data);

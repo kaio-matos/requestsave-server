@@ -60,6 +60,9 @@ class AccountValidationClass {
       email: Joi.string().email().min(this.min.string).max(this.max.email),
       phoneNumber: Joi.number(),
       password: Joi.string().min(this.min.password).max(this.max.password),
+
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
 
     return schema.validate(data);

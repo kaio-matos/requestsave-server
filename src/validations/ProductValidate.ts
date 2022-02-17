@@ -18,6 +18,8 @@ class ProductValidationClass {
       id: Joi.number().positive().required(),
       name: Joi.string().min(3).max(50),
       basePrice: Joi.number().strict().positive(),
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
 
     return schema.validate(data);

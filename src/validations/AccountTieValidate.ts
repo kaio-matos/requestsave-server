@@ -21,6 +21,9 @@ class AccountTieValidationClass {
       phoneNumber: JoiPhone.string()
         .phoneNumber({ defaultCountry: "BR", format: "national", strict: true })
         .required(),
+
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
     return schema.validate(data);
   };

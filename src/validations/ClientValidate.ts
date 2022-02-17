@@ -18,6 +18,9 @@ class ClientValidationClass {
       id: Joi.number().positive().required(),
       name: Joi.string().min(3).max(50),
       email: Joi.string().email().allow(""),
+
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
     return schema.validate(data);
   };

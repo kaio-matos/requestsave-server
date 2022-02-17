@@ -25,7 +25,7 @@ class ClientValidationClass {
     return schema.validate(data);
   };
 
-  id = (id: string): ValidationResult => {
+  id = (id: number): ValidationResult => {
     const schema = Joi.number().positive().required();
     return schema.validate(id);
   };

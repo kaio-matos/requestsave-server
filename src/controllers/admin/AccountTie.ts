@@ -7,7 +7,7 @@ import { AccountTieValidation } from "../../validations/AccountTieValidate";
 
 class AccountTie {
   public async create(req: Request, res: Response): Promise<Response> {
-    const data: { account_id: string } & AccountTieBasicsType = req.body;
+    const data: { account_id: number } & AccountTieBasicsType = req.body;
 
     if (AccountTieValidation.create({ phoneNumber: data.phoneNumber }).error)
       throw new ErrorDealer("Validation:Error");

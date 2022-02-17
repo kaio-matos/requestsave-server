@@ -31,12 +31,12 @@ class AccountValidationClass {
         .email()
         .min(this.min.string)
         .max(this.max.email)
-        .valid("admin")
+        .allow("admin")
         .required(),
       password: Joi.string()
         .min(this.min.password)
         .max(this.max.password)
-        .valid("admin")
+        .allow("admin")
         .required(),
     });
 

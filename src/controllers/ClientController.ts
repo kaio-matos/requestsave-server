@@ -52,15 +52,36 @@ class ClientController {
 
   public async get(req: Request, res: Response): Promise<Response> {
     const account_id = req.body.account_id;
-    let name = req.query.name;
+    const search = req.query.search;
+
+    const pagination = {
+      page: parseInt(String(req.query.page)),
+      pageSize: parseInt(String(req.query.pageSize)),
+    };
+
+    let paginator = {};
+    if (pagination.page && pagination.pageSize) {
+      paginator = {
+        skip: pagination.page * pagination.pageSize,
+        take: pagination.pageSize + 1,
+      };
+    }
+
+    const filter = {
+      AND: [{ name: { contains: search ? String(search) : "" } }, { account_id }],
+    };
 
     const CLIENTS = await prisma.client.findMany({
-      where: {
-        AND: [{ name: { contains: name ? String(name) : "" } }, { account_id }],
-      },
+      where: filter,
+      include: { requests: { select: { id: true, title: true } } },
+      ...paginator,
     });
 
-    return res.status(200).json(ResMsg("Clientes encontrados com sucesso", CLIENTS));
+    const quantity = await prisma.client.count({ where: filter });
+
+    return res
+      .status(200)
+      .json(ResMsg("Clientes encontrados com sucesso", { table: CLIENTS, quantity }));
   }
 }
 export default new ClientController();

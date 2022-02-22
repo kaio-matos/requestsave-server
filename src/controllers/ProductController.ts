@@ -51,15 +51,36 @@ class ProductController {
 
   public async get(req: Request, res: Response): Promise<Response> {
     const account_id = req.body.account_id;
-    let name = req.query.name;
+    const search = req.query.search;
+
+    const pagination = {
+      page: parseInt(String(req.query.page)),
+      pageSize: parseInt(String(req.query.pageSize)),
+    };
+
+    let paginator = {};
+    if (pagination.page && pagination.pageSize) {
+      paginator = {
+        skip: pagination.page * pagination.pageSize,
+        take: pagination.pageSize + 1,
+      };
+    }
+
+    const filter = {
+      AND: [{ name: { contains: search ? String(search) : "" } }, { account_id }],
+    };
 
     const PRODUCTS = await prisma.product.findMany({
-      where: {
-        AND: [{ name: { contains: name ? String(name) : "" } }, { account_id }],
-      },
+      where: filter,
+      include: { requests: { select: { id: true, title: true } } },
+      ...paginator,
     });
 
-    return res.status(200).json(ResMsg("Produtos encontrados com sucesso", PRODUCTS));
+    const quantity = await prisma.product.count({ where: filter });
+
+    return res
+      .status(200)
+      .json(ResMsg("Produtos encontrados com sucesso", { table: PRODUCTS, quantity }));
   }
 }
 export default new ProductController();

@@ -35,6 +35,19 @@ class RequestController {
     if (!newData) throw new ErrorDealer("Validation:Error");
     if (RequestValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
+    const account = await prisma.account.findUnique({
+      where: { id: newData.account_id },
+      include: {
+        requests: { where: { title: newData.title } },
+        clients: { where: { id: newData.client_id } },
+        products: { where: { id: newData.product_id } },
+      },
+    });
+    if (!account) throw new ErrorDealer("User:DontExist");
+    if (account.requests?.length) throw new ErrorDealer("Request:Exist");
+    if (!account.clients?.length) throw new ErrorDealer("Client:DontExist");
+    if (!account.products?.length) throw new ErrorDealer("Product:DontExist");
+
     const updated = await prisma.request.updateMany({
       where: {
         AND: [

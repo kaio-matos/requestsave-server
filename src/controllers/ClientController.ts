@@ -30,6 +30,15 @@ class ClientController {
     if (!newData) throw new ErrorDealer("Validation:Error");
     if (ClientValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
+    const clients = (
+      await prisma.account.findUnique({
+        where: { id: newData.account_id },
+        include: { clients: { where: { name: { equals: newData.name } } } },
+      })
+    )?.clients;
+
+    if (clients?.length) throw new ErrorDealer("Client:Exist");
+
     const updated = await prisma.client.updateMany({
       where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },
       data: newData,

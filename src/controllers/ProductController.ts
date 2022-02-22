@@ -29,6 +29,14 @@ class ProductController {
     if (!newData) throw new ErrorDealer("Validation:Error");
     if (ProductValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
+    const products = (
+      await prisma.account.findUnique({
+        where: { id: newData.account_id },
+        include: { products: { where: { name: { equals: newData.name } } } },
+      })
+    )?.products;
+    if (products?.length) throw new ErrorDealer("Product:Exist");
+
     const updated = await prisma.product.updateMany({
       where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },
       data: newData,

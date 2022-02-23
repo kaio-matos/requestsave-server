@@ -25,9 +25,9 @@ routes.put("/product", UserController.editProduct);
 routes.delete("/product/:id", UserController.deleteProduct);
 routes.get("/product", UserController.getProducts);
 
-routes.put("/users", roleCheck, AdminController.editAccountRole);
-routes.delete("/users/:id", roleCheck, AdminController.deleteAccount);
-routes.get("/users", roleCheck, AdminController.getAccounts);
+routes.put("/user", roleCheck, AdminController.editAccountRole);
+routes.delete("/user/:id", roleCheck, AdminController.deleteAccount);
+routes.get("/user", roleCheck, AdminController.getAccounts);
 
 routes.post("/accountie", roleCheck, AdminController.createAccountTie);
 routes.put("/accountie", roleCheck, AdminController.editAccountTie);

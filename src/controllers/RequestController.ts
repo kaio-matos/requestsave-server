@@ -70,7 +70,9 @@ class RequestController {
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
-    const { account_id, id } = req.body;
+    const { account_id } = req.body;
+    const id = parseInt(req.params.id);
+
     if (!id) throw new ErrorDealer("Validation:Error");
     if (RequestValidation.id(id).error) throw new ErrorDealer("Validation:Error");
 

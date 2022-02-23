@@ -1,12 +1,13 @@
+import { prisma } from "../app";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import ErrorDealer from "../errors/ErrorDealer";
 
-export default (
+export default async (
   req: Request,
   res: Response,
   next: NextFunction
-): Response<any, Record<string, any>> | void => {
+): Promise<Response<any, Record<string, any>> | void> => {
   if (!process.env.JWT_SECRET) throw new ErrorDealer("Server:Error");
 
   const authHeader = req.headers["authorization-token"] as string;
@@ -20,11 +21,16 @@ export default (
   const [scheme, token] = parts;
   if (!/^Bearer$/i.test(scheme)) throw new ErrorDealer("User:TokenBadFormatted");
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) throw new ErrorDealer("User:TokenInvalid");
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    if (typeof payload === "string" || !payload) throw new ErrorDealer("Server:Error");
 
-    if (typeof decoded === "string" || !decoded) throw new ErrorDealer("Server:Error");
-    req.body.account_id = decoded.id;
+    const acc = await prisma.account.findUnique({ where: { id: payload.id } });
+    if (!acc) throw new ErrorDealer("User:DontExist");
+
+    req.body.account_id = payload.id;
     return next();
-  });
+  } catch (err) {
+    if (err) throw new ErrorDealer("User:TokenInvalid");
+  }
 };

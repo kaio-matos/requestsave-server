@@ -69,10 +69,10 @@ class ProductController {
     };
 
     let paginator = {};
-    if (pagination.page && pagination.pageSize) {
+    if (typeof pagination.page === "number" && pagination.pageSize) {
       paginator = {
         skip: pagination.page * pagination.pageSize,
-        take: pagination.pageSize + 1,
+        take: pagination.pageSize,
       };
     }
 

@@ -29,9 +29,9 @@ routes.put("/user", roleCheck, AdminController.editAccountRole);
 routes.delete("/user/:id", roleCheck, AdminController.deleteAccount);
 routes.get("/user", roleCheck, AdminController.getAccounts);
 
-routes.post("/accountie", roleCheck, AdminController.createAccountTie);
-routes.put("/accountie", roleCheck, AdminController.editAccountTie);
-routes.delete("/accountie/:id", roleCheck, AdminController.deleteAccountTie);
-routes.get("/accountie", roleCheck, AdminController.getAccountTie);
+routes.post("/accounttie", roleCheck, AdminController.createAccountTie);
+routes.put("/accounttie", roleCheck, AdminController.editAccountTie);
+routes.delete("/accounttie/:id", roleCheck, AdminController.deleteAccountTie);
+routes.get("/accounttie", roleCheck, AdminController.getAccountTie);
 
 export default routes;

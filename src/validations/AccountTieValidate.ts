@@ -20,6 +20,7 @@ class AccountTieValidationClass {
       id: Joi.number().positive().required(),
       phoneNumber: JoiPhone.string()
         .phoneNumber({ defaultCountry: "BR", format: "national", strict: true })
+        .allow("admin")
         .required(),
 
       createdAt: Joi.date(),

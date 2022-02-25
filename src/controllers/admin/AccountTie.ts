@@ -31,7 +31,7 @@ class AccountTie {
     const accountTie = await prisma.accountTie.findUnique({
       where: { phoneNumber: newData.phoneNumber },
     });
-    if (accountTie) throw new ErrorDealer("AccountTie:Exist");
+    if (!accountTie) throw new ErrorDealer("AccountTie:DontExist");
 
     const updated = await prisma.accountTie.updateMany({
       where: { id: id },
@@ -55,14 +55,37 @@ class AccountTie {
   }
 
   public async get(req: Request, res: Response): Promise<Response> {
-    let name = req.query.name;
+    const account_id = req.body.account_id;
+    const search = req.query.search;
+
+    const pagination = {
+      page: parseInt(String(req.query.page)),
+      pageSize: parseInt(String(req.query.pageSize)),
+    };
+
+    let paginator = {};
+    if (typeof pagination.page === "number" && pagination.pageSize) {
+      paginator = {
+        skip: pagination.page * pagination.pageSize,
+        take: pagination.pageSize,
+      };
+    }
+
+    const filter = {
+      AND: [{ phoneNumber: { contains: search ? String(search) : "" } }],
+    };
 
     const ACCOUNTTIES = await prisma.accountTie.findMany({
-      where: { phoneNumber: { contains: name ? String(name) : "" } },
-      include: { account: true },
+      where: filter,
+      include: { account: { select: { email: true, firstName: true, lastName: true } } },
+      ...paginator,
     });
 
-    return res.status(200).json(ResMsg("Vínculos encontrados com sucesso", ACCOUNTTIES));
+    const quantity = await prisma.accountTie.count({ where: filter });
+
+    return res
+      .status(200)
+      .json(ResMsg("Vínculos encontrados com sucesso", { table: ACCOUNTTIES, quantity }));
   }
 }
 export default new AccountTie();

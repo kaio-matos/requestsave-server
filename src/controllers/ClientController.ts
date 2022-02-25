@@ -33,11 +33,11 @@ class ClientController {
     const clients = (
       await prisma.account.findUnique({
         where: { id: newData.account_id },
-        include: { clients: { where: { name: { equals: newData.name } } } },
+        include: { clients: { where: { id: { equals: newData.id } } } },
       })
     )?.clients;
 
-    if (clients?.length) throw new ErrorDealer("Client:Exist");
+    if (!clients?.length) throw new ErrorDealer("Client:DontExist");
 
     const updated = await prisma.client.updateMany({
       where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },

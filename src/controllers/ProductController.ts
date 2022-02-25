@@ -32,10 +32,10 @@ class ProductController {
     const products = (
       await prisma.account.findUnique({
         where: { id: newData.account_id },
-        include: { products: { where: { name: { equals: newData.name } } } },
+        include: { products: { where: { id: { equals: newData.id } } } },
       })
     )?.products;
-    if (products?.length) throw new ErrorDealer("Product:Exist");
+    if (!products?.length) throw new ErrorDealer("Product:DontExist");
 
     const updated = await prisma.product.updateMany({
       where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },

@@ -38,13 +38,13 @@ class RequestController {
     const account = await prisma.account.findUnique({
       where: { id: newData.account_id },
       include: {
-        requests: { where: { title: newData.title } },
+        requests: { where: { id: newData.id } },
         clients: { where: { id: newData.client_id } },
         products: { where: { id: newData.product_id } },
       },
     });
     if (!account) throw new ErrorDealer("User:DontExist");
-    if (account.requests?.length) throw new ErrorDealer("Request:Exist");
+    if (!account.requests?.length) throw new ErrorDealer("Request:DontExist");
     if (!account.clients?.length) throw new ErrorDealer("Client:DontExist");
     if (!account.products?.length) throw new ErrorDealer("Product:DontExist");
 
@@ -98,9 +98,6 @@ class RequestController {
         take: pagination.pageSize,
       };
     }
-
-    console.log(pagination);
-    console.log(paginator);
 
     const filter = {
       AND: [{ title: { contains: search ? String(search) : "" } }, { account_id }],

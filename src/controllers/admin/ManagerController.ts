@@ -33,7 +33,7 @@ class ManagerController {
 
     const accounts = await prisma.account.findMany({
       where: filter,
-      include: { accountTie: { select: { phoneNumber: true } } },
+      include: { accountTie: true },
       ...paginator,
     });
 
@@ -42,7 +42,6 @@ class ManagerController {
     const treatedAccounts = accounts.map((acc) => {
       const {
         password,
-        accountTie_id,
         passwordResetExpires,
         passwordResetToken,
         confirmedEmailExpires,
@@ -58,20 +57,27 @@ class ManagerController {
     );
   }
 
-  public async editRole(req: Request, res: Response): Promise<Response> {
+  public async edit(req: Request, res: Response): Promise<Response> {
     const { account_id, ...data } = req.body;
 
-    if (ManagerValidation.editRole(data).error) throw new ErrorDealer("Validation:Error");
+    if (ManagerValidation.edit(data).error) throw new ErrorDealer("Validation:Error");
 
     const account = await prisma.account.findUnique({ where: { id: data.id } });
     if (!account) throw new ErrorDealer("User:DontExist");
 
-    await prisma.account.update({
-      where: { id: data.id },
-      data: { role: data.role },
+    const accountTie = await prisma.accountTie.findUnique({
+      where: { id: data.accountTie_id },
+      include: { account: true },
     });
 
-    return res.status(200).json(ResMsg("Cargo alterado com sucesso!", true));
+    if (accountTie?.account) throw new ErrorDealer("UserAccountTie:Used");
+
+    await prisma.account.update({
+      where: { id: data.id },
+      data: { role: data.role, accountTie_id: data.accountTie_id },
+    });
+
+    return res.status(200).json(ResMsg("Usuário alterado com sucesso!", true));
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {

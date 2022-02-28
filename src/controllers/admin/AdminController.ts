@@ -7,7 +7,7 @@ class AdminController {
   deleteAccountTie = AccountTie.delete;
   getAccountTie = AccountTie.get;
 
-  editAccountRole = ManagerController.editRole;
+  editAccount = ManagerController.edit;
   deleteAccount = ManagerController.delete;
   getAccounts = ManagerController.get;
 }

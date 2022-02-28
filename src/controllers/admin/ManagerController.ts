@@ -59,6 +59,7 @@ class ManagerController {
 
   public async edit(req: Request, res: Response): Promise<Response> {
     const { account_id, ...data } = req.body;
+    const id = parseInt(req.params.id);
 
     if (ManagerValidation.edit(data).error) throw new ErrorDealer("Validation:Error");
 
@@ -73,7 +74,7 @@ class ManagerController {
     if (accountTie?.account) throw new ErrorDealer("UserAccountTie:Used");
 
     await prisma.account.update({
-      where: { id: data.id },
+      where: { id },
       data: { role: data.role, accountTie_id: data.accountTie_id },
     });
 

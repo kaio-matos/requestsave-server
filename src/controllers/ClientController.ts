@@ -26,21 +26,22 @@ class ClientController {
 
   public async edit(req: Request, res: Response): Promise<Response> {
     const newData = req.body;
+    const id = parseInt(req.params.id);
 
     if (!newData) throw new ErrorDealer("Validation:Error");
-    if (ClientValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+    if (ClientValidation.edit({ id, ...newData }).error) throw new ErrorDealer("Validation:Error");
 
     const clients = (
       await prisma.account.findUnique({
         where: { id: newData.account_id },
-        include: { clients: { where: { id: { equals: newData.id } } } },
+        include: { clients: { where: { id: { equals: id } } } },
       })
     )?.clients;
 
     if (!clients?.length) throw new ErrorDealer("Client:DontExist");
 
     const updated = await prisma.client.updateMany({
-      where: { AND: [{ id: newData.id }, { account_id: newData.account_id }] },
+      where: { AND: [{ id }, { account_id: newData.account_id }] },
       data: newData,
     });
     if (updated.count === 0) throw new ErrorDealer("Client:DontExist");

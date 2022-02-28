@@ -16,7 +16,7 @@ routes.post("/forgetresetpassword", AccountController.ForgetPassword.reset);
 routes.post("/resetpassword", auth, AccountController.Auth.resetPassword);
 routes.post("/checktoken", auth, AccountController.Auth.checkJWT);
 routes.post("/logout", auth, AccountController.Auth.logout);
-routes.put("/edit", auth, AccountController.Auth.edit);
-routes.delete("/delete", auth, AccountController.Auth.delete);
+routes.put("/", auth, AccountController.Auth.edit);
+routes.delete("/", auth, AccountController.Auth.delete);
 
 export default routes;

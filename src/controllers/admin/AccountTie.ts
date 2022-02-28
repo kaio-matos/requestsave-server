@@ -22,7 +22,8 @@ class AccountTie {
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {
-    const { id, account_id, ...newData } = req.body;
+    const { account_id, ...newData } = req.body;
+    const id = parseInt(req.params.id);
 
     if (!newData) throw new ErrorDealer("Validation:Error");
     if (AccountTieValidation.edit({ id, ...newData }).error)

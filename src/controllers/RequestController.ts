@@ -31,9 +31,10 @@ class RequestController {
 
   public async edit(req: Request, res: Response): Promise<Response> {
     const newData = req.body;
+    const id = parseInt(req.params.id);
 
     if (!newData) throw new ErrorDealer("Validation:Error");
-    if (RequestValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
+    if (RequestValidation.edit({ id, ...newData }).error) throw new ErrorDealer("Validation:Error");
 
     const account = await prisma.account.findUnique({
       where: { id: newData.account_id },
@@ -51,7 +52,7 @@ class RequestController {
     const updated = await prisma.request.updateMany({
       where: {
         AND: [
-          { id: newData.id },
+          { id },
           {
             account: {
               id: newData.account_id,

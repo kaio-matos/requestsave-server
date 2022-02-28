@@ -3,9 +3,10 @@ import Joi, { ValidationResult } from "joi";
 class ManagerValidationClass {
   ACCOUNT_ROLES = ["USER", "ADMIN"];
 
-  editRole = (data: { id: number; role: "USER" | "ADMIN" }): ValidationResult => {
+  edit = (data: { id: number; role: "USER" | "ADMIN" }): ValidationResult => {
     const schema = Joi.object({
       id: Joi.number().positive().required(),
+      accountTie_id: Joi.number().positive().required(),
       role: Joi.string()
         .valid(...this.ACCOUNT_ROLES)
         .required(),

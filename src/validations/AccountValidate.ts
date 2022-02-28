@@ -1,5 +1,8 @@
 import Joi, { ValidationResult } from "joi";
+import joiPhoneNumber from "joi-phone-number";
 import { AccountForgetPassType, AccountLoginType, AccountRegistrationI } from "../types/Account";
+
+const JoiPhone = Joi.extend(joiPhoneNumber);
 
 class AccountValidationClass {
   min = {
@@ -18,7 +21,9 @@ class AccountValidationClass {
       firstName: Joi.string().min(this.min.string).max(this.max.name).required(),
       lastName: Joi.string().min(this.min.string).max(this.max.name).required(),
       email: Joi.string().email().min(this.min.string).max(this.max.email).required(),
-      phoneNumber: Joi.string().max(15).required(),
+      phoneNumber: JoiPhone.string()
+        .phoneNumber({ defaultCountry: "BR", format: "national", strict: true })
+        .required(),
       password: Joi.string().min(this.min.password).max(this.max.password).required(),
     });
 
@@ -58,7 +63,9 @@ class AccountValidationClass {
       firstName: Joi.string().min(this.min.string).max(this.max.name),
       lastName: Joi.string().min(this.min.string).max(this.max.name),
       email: Joi.string().email().min(this.min.string).max(this.max.email),
-      phoneNumber: Joi.number(),
+      phoneNumber: JoiPhone.string()
+        .phoneNumber({ defaultCountry: "BR", format: "national", strict: true })
+        .required(),
       password: Joi.string().min(this.min.password).max(this.max.password),
 
       createdAt: Joi.date(),

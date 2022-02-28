@@ -135,4 +135,10 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este vínculo não existe",
     status: 404,
   },
+
+  {
+    code: "UserAccountTie:Used",
+    message: "Este vínculo já está sendo usado com outra conta",
+    status: 409,
+  },
 ];

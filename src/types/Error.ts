@@ -29,6 +29,7 @@ type UnionCodesClientType = "Client:Exist" | "Client:DontExist";
 type UnionCodesProductType = "Product:Exist" | "Product:DontExist";
 type UnionCodesRequestType = "Request:Exist" | "Request:DontExist" | "Request:SomeDocDontExist";
 type UnionCodesAccountTieType = "AccountTie:Exist" | "AccountTie:DontExist";
+type UnionCodesUserAccountTieType = "UserAccountTie:Used";
 
 export type UnionCodesType =
   | UnionCodesPrismaType
@@ -40,4 +41,5 @@ export type UnionCodesType =
   | UnionCodesClientType
   | UnionCodesProductType
   | UnionCodesRequestType
-  | UnionCodesAccountTieType;
+  | UnionCodesAccountTieType
+  | UnionCodesUserAccountTieType;

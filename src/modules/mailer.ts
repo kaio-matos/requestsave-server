@@ -6,7 +6,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
+  port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : undefined,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
@@ -23,6 +23,8 @@ async function sendMail(
   const source = fs.readFileSync(filePath, "utf-8").toString();
   const template = Handlebars.compile(source);
 
+  const extendedReplacements = { ...replacements, pageUrl: process.env.CLIENT_URL };
+
   try {
     const message = await transport.sendMail({
       to: email,
@@ -30,7 +32,7 @@ async function sendMail(
 
       subject: header.subject,
       text: header.text,
-      html: template(replacements),
+      html: template(extendedReplacements),
     });
     return message;
   } catch (err) {

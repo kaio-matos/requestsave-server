@@ -1,11 +1,14 @@
 {
-  "name": "server",
+  "name": "RequestSave-server",
   "version": "1.0.0",
   "main": "server.ts",
   "license": "MIT",
   "scripts": {
     "dev": "dotenv -e config/dev.env nodemon src/server.ts",
+    "build": "tsc && yarn migrateprod:mysql",
+    "start": "node dist/server.js",
     "migratedev:mysql": "dotenv -e config/dev.env -- yarn prisma migrate dev --name init",
+    "migrateprod:mysql": "yarn prisma migrate deploy",
     "prisma:studio": "dotenv -e config/dev.env -- yarn prisma studio"
   },
   "devDependencies": {
@@ -16,6 +19,7 @@
     "@types/handlebars": "^4.1.0",
     "@types/joi": "^17.2.3",
     "@types/joi-phone-number": "^5.0.3",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.14",
     "@types/nodemailer": "^6.4.4",
     "ts-node": "^10.4.0",
@@ -23,7 +27,6 @@
   },
   "dependencies": {
     "@prisma/client": "3.9.1",
-    "@types/jsonwebtoken": "^8.5.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

@@ -9,3 +9,6 @@ yarn-error.log
 .env
 /config/dev.env
 /config/production.env
+
+# Build
+/dist

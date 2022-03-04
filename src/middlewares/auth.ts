@@ -2,6 +2,7 @@ import { prisma } from "../app";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import ErrorDealer from "../errors/ErrorDealer";
+import cookieParser from "cookie-parser";
 
 export default async (
   req: Request,
@@ -10,7 +11,7 @@ export default async (
 ): Promise<Response<any, Record<string, any>> | void> => {
   if (!process.env.JWT_SECRET) throw new ErrorDealer("Server:Error");
 
-  const authHeader = req.headers["authorization-token"] as string;
+  const authHeader = req.cookies["authorization-token"] as string;
   if (!authHeader) throw new ErrorDealer("User:Unauthorized");
 
   const parts = authHeader.split(" ");

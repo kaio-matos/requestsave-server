@@ -39,15 +39,15 @@ class AccountController {
 
     const TOKEN = createJWT(account.id);
 
-    res.cookie("token", TOKEN, {
-      // expires: new Date(Date.now() + 1000 * 60 * 60)
-      // sameSite: 'none'
-      // secure: true
+    res.cookie("authorization-token", TOKEN, {
+      expires: new Date(Date.now() + 1000 * 60 * 60), // now + 1h
+      sameSite: "none",
+      secure: true,
     });
     res.cookie("role", account.role, {
-      // expires: new Date(Date.now() + 1000 * 60 * 60)
-      // sameSite: 'none'
-      // secure: true
+      expires: new Date(Date.now() + 1000 * 60 * 60), // now + 1h
+      sameSite: "none",
+      secure: true,
     });
     return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }

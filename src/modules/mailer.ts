@@ -7,6 +7,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : undefined,
+  secure: process.env.STATE === "production",
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
@@ -34,8 +35,10 @@ async function sendMail(
       text: header.text,
       html: template(extendedReplacements),
     });
+    console.log(message);
     return message;
   } catch (err) {
+    console.error(err);
     return undefined;
   }
 }

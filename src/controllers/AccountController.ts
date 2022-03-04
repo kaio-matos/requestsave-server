@@ -83,7 +83,8 @@ class AccountController {
         },
       });
 
-      await sendConfirmationEmail(token, account.email);
+      const message = await sendConfirmationEmail(token, account.email);
+      if (!message) throw new ErrorDealer("Email:SendFailed");
 
       return res.status(201).json(ResMsg("Email enviado com sucesso", true));
     },

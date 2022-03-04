@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "dotenv -e config/dev.env nodemon src/server.ts",
-    "build": "tsc && yarn migrateprod:mysql",
+    "build": "tsc && yarn migrateprod:mysql && cp -R src/resources dist",
     "start": "node dist/server.js",
     "migratedev:mysql": "dotenv -e config/dev.env -- yarn prisma migrate dev --name init",
     "migrateprod:mysql": "yarn prisma migrate deploy",

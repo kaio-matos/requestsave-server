@@ -13,6 +13,7 @@ export async function sendConfirmationEmail(
 
     return message;
   } catch (err) {
+    console.error(err);
     return undefined;
   }
 }

@@ -32,7 +32,7 @@ class AccountTie {
       throw new ErrorDealer("Validation:Error");
 
     const accountTie = await prisma.accountTie.findUnique({
-      where: { phoneNumber: newData.phoneNumber },
+      where: { id },
     });
     if (!accountTie) throw new ErrorDealer("AccountTie:DontExist");
 

@@ -63,9 +63,9 @@ class ManagerController {
     const { account_id, ...data } = req.body;
     const id = parseInt(req.params.id);
 
-    if (ManagerValidation.edit(data).error) throw new ErrorDealer("Validation:Error");
+    if (ManagerValidation.edit({ id, ...data }).error) throw new ErrorDealer("Validation:Error");
 
-    const account = await prisma.account.findUnique({ where: { id: data.id } });
+    const account = await prisma.account.findUnique({ where: { id } });
     if (!account) throw new ErrorDealer("User:DontExist");
 
     const accountTie = await prisma.accountTie.findUnique({
@@ -73,7 +73,7 @@ class ManagerController {
       include: { account: true },
     });
 
-    if (accountTie?.account) throw new ErrorDealer("UserAccountTie:Used");
+    if (accountTie?.account.id !== id) throw new ErrorDealer("UserAccountTie:Used");
 
     await prisma.account.update({
       where: { id },

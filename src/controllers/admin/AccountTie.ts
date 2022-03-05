@@ -6,6 +6,7 @@ import { ResMsg } from "../../utils/ResponseMessage";
 import { AccountTieValidation } from "../../validations/AccountTieValidate";
 
 class AccountTie {
+  /** Cria um vínculo com nenhum usuário ligado a ele */
   public async create(req: Request, res: Response): Promise<Response> {
     const data: { account_id: number } & AccountTieBasicsType = req.body;
 
@@ -21,6 +22,7 @@ class AccountTie {
     return res.status(201).json(ResMsg("Vínculo criado com sucesso", tie));
   }
 
+  /** Recebe os dados para alterar valor do vínculo */
   public async edit(req: Request, res: Response): Promise<Response> {
     const { account_id, ...newData } = req.body;
     const id = parseInt(req.params.id);
@@ -43,6 +45,7 @@ class AccountTie {
     return res.status(200).json(ResMsg("Vínculo editado com sucesso!", true));
   }
 
+  /** Deleta um vínculo e tudo que se associa a ele com seu ID */
   public async delete(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id);
 
@@ -55,6 +58,7 @@ class AccountTie {
     return res.status(200).json(ResMsg("Vínculo deletado com sucesso!", true));
   }
 
+  /** Recebe a paginação e a search, então responde enviando um array com todos os vínculos e com suas contas de forma paginada e filtrado pelo search */
   public async get(req: Request, res: Response): Promise<Response> {
     const account_id = req.body.account_id;
     const search = req.query.search;

@@ -5,6 +5,7 @@ import { ResMsg } from "../../utils/ResponseMessage";
 import { ManagerValidation } from "../../validations/ManagerValidate";
 
 class ManagerController {
+  /** Recebe a paginação e a search, então responde enviando um array com todos os usuários de forma paginada e filtrado pelo search */
   public async get(req: Request, res: Response): Promise<Response> {
     const search = req.query.search;
     const [firstName, lastName] = String(search).split(" ");
@@ -57,6 +58,7 @@ class ManagerController {
     );
   }
 
+  /** Envia os dados para alterar o vínculo ou o cargo do usuário */
   public async edit(req: Request, res: Response): Promise<Response> {
     const { account_id, ...data } = req.body;
     const id = parseInt(req.params.id);
@@ -81,6 +83,7 @@ class ManagerController {
     return res.status(200).json(ResMsg("Usuário alterado com sucesso!", true));
   }
 
+  /** Deleta a conta de um usuário (e tudo que está associado a ele) baseado no ID enviado */
   public async delete(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id);
 

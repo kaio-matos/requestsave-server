@@ -15,6 +15,13 @@ import { createJWT } from "../utils/createJwt";
 import { sendMail } from "../modules/mailer";
 
 class AccountController {
+  /**
+   *
+   * Login do usuário
+   *
+   * `login`: Recebe o email e senha e envia o Cookie JWT para usar nas próximas requisições, com validade de 1h
+   *
+   */
   public async login(req: Request, res: Response): Promise<Response> {
     const { email, password }: { email: string; password: string } = req.body;
 
@@ -51,6 +58,20 @@ class AccountController {
     });
     return res.status(200).json(ResMsg("Login realizado com sucesso!", { ...accountInfo }));
   }
+
+  /**
+   *
+   * Registro de usuário e confirmação de email
+   *
+   * `sendEmail`: Envia o email com um botão de confirmação,
+   *              que levará à uma pagina que em sua URL possui os parâmetros
+   *              que serão enviados ao servidor
+   *
+   * `resendEmail`: Envia o novamente o email de confirmação
+   *
+   * `confirmEmail`: Recebe os parâmetos passados pela URL do botão confirmar email
+   *
+   */
 
   public Register = {
     async sendEmail(req: Request, res: Response): Promise<Response> {
@@ -137,6 +158,22 @@ class AccountController {
     },
   };
 
+  /**
+   *
+   * Controle da conta do próprio usuário, necessário da autenticação por Cookie.
+   *
+   * `logout`: Recebe uma requisição sem Body apenas para checar o Cookie JWT
+   *
+   * `edit`: Pode receber valores para alteração de dados da conta
+   *
+   * `resetPassword`: Permite a alteração da senha apenas com o email e senha
+   *
+   * `delete`: Deleta a conta do usuário
+   *
+   * `checkJWT`: Recebe uma requisição sem Body apenas para checar o Cookie JWT
+   *
+   */
+
   public Auth = {
     async logout(req: Request, res: Response): Promise<Response> {
       const account_id = req.body.account_id;
@@ -194,6 +231,16 @@ class AccountController {
       return res.status(200).json(ResMsg("JWT identificado com sucesso", true));
     },
   };
+
+  /**
+   *
+   * Esqueci minha senha e reset de senha:
+   *
+   * `sendEmail`: Envia um email com um código
+   *
+   * `reset`: Com o código é possível fazer a alteração de senha
+   *
+   */
 
   public ForgetPassword = {
     async sendEmail(req: Request, res: Response): Promise<Response> {

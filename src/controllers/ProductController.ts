@@ -6,6 +6,7 @@ import { ResMsg } from "../utils/ResponseMessage";
 import { ProductValidation } from "../validations/ProductValidate";
 
 class ProductController {
+  /** Cria um produto  */
   public async create(req: Request, res: Response): Promise<Response> {
     const data: ProductBasicsType = req.body;
 
@@ -23,6 +24,7 @@ class ProductController {
     return res.status(201).json(ResMsg("Produto criado com sucesso", PRODUCT));
   }
 
+  /** Altera um produto com seu ID */
   public async edit(req: Request, res: Response): Promise<Response> {
     const newData = req.body;
     const id = parseInt(req.params.id);
@@ -47,6 +49,7 @@ class ProductController {
     return res.status(200).json(ResMsg("Produto editado com sucesso!", true));
   }
 
+  /** Deleta um produto com seu ID */
   public async delete(req: Request, res: Response): Promise<Response> {
     const { account_id } = req.body;
     const id = parseInt(req.params.id);
@@ -60,6 +63,7 @@ class ProductController {
     return res.status(200).json(ResMsg("Produto deletado com sucesso!", true));
   }
 
+  /** Recebe a paginação e a search, então responde enviando um array com todos os produtos de forma paginada e filtrado pelo search */
   public async get(req: Request, res: Response): Promise<Response> {
     const account_id = req.body.account_id;
     const search = req.query.search;

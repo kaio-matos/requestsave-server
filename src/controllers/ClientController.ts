@@ -6,6 +6,7 @@ import { ResMsg } from "../utils/ResponseMessage";
 import { ClientValidation } from "../validations/ClientValidate";
 
 class ClientController {
+  /** Cria um cliente */
   public async create(req: Request, res: Response): Promise<Response> {
     const data: ClientBasicsType = req.body;
 
@@ -24,6 +25,7 @@ class ClientController {
     return res.status(201).json(ResMsg("Cliente criado com sucesso", CLIENT));
   }
 
+  /** Altera um cliente com seu ID */
   public async edit(req: Request, res: Response): Promise<Response> {
     const newData = req.body;
     const id = parseInt(req.params.id);
@@ -49,6 +51,7 @@ class ClientController {
     return res.status(200).json(ResMsg("Cliente editado com sucesso!", true));
   }
 
+  /** Deleta um cliente com seu ID */
   public async delete(req: Request, res: Response): Promise<Response> {
     const { account_id } = req.body;
     const id = parseInt(req.params.id);
@@ -62,6 +65,7 @@ class ClientController {
     return res.status(200).json(ResMsg("Cliente deletado com sucesso!", true));
   }
 
+  /** Recebe a paginação e a search, então responde enviando um array com todos os clientes de forma paginada e filtrado pelo search */
   public async get(req: Request, res: Response): Promise<Response> {
     const account_id = req.body.account_id;
     const search = req.query.search;

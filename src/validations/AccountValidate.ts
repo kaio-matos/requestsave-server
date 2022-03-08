@@ -63,9 +63,11 @@ class AccountValidationClass {
       firstName: Joi.string().min(this.min.string).max(this.max.name),
       lastName: Joi.string().min(this.min.string).max(this.max.name),
       email: Joi.string().email().min(this.min.string).max(this.max.email),
-      phoneNumber: JoiPhone.string()
-        .phoneNumber({ defaultCountry: "BR", format: "national", strict: true })
-        .required(),
+      phoneNumber: JoiPhone.string().phoneNumber({
+        defaultCountry: "BR",
+        format: "national",
+        strict: true,
+      }),
       password: Joi.string().min(this.min.password).max(this.max.password),
 
       createdAt: Joi.date(),

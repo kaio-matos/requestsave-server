@@ -5,15 +5,12 @@ import Handlebars from "handlebars";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transport = nodemailer.createTransport({
-  service: process.env.MAIL_HOST ? undefined : "Gmail",
-  host: process.env.MAIL_HOST ? process.env.MAIL_HOST : undefined,
-  port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : undefined,
+  service: process.env.MAIL_HOST ? undefined : "Mailgun",
+  host: process.env.MAILGUN_SMTP_SERVER ? process.env.MAILGUN_SMTP_SERVER : undefined,
+  port: process.env.MAILGUN_SMTP_PORT ? Number(process.env.MAILGUN_SMTP_PORT) : undefined,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-    clientId: process.env.OAUTH_CLIENTID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+    user: process.env.MAILGUN_SMTP_LOGIN,
+    pass: process.env.MAILGUN_SMTP_PASSWORD,
   },
 });
 

@@ -73,7 +73,8 @@ class ManagerController {
       include: { account: true },
     });
 
-    if (accountTie?.account.id !== id) throw new ErrorDealer("UserAccountTie:Used");
+    if (accountTie?.account && accountTie.account.id !== id)
+      throw new ErrorDealer("UserAccountTie:Used");
 
     await prisma.account.update({
       where: { id },

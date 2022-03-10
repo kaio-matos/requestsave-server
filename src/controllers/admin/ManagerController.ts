@@ -75,6 +75,8 @@ class ManagerController {
 
     if (accountTie?.account && accountTie.account.id !== id)
       throw new ErrorDealer("UserAccountTie:Used");
+    // VERIFICAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+    if (accountTie.phoneNumber === "admin") throw new ErrorDealer("TestAdminCheck:Unauthorized");
 
     await prisma.account.update({
       where: { id },

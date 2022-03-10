@@ -188,8 +188,16 @@ class AccountController {
 
       if (AccountValidation.edit(newData).error) throw new ErrorDealer("Validation:Error");
 
-      const account = await prisma.account.findUnique({ where: { id: account_id } });
+      const account = await prisma.account.findUnique({
+        where: { id: account_id },
+        // ALTERAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+        include: { accountTie: true },
+      });
       if (!account) throw new ErrorDealer("User:DontExist");
+
+      // VERIFICAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+      if (account.accountTie.phoneNumber === "admin")
+        throw new ErrorDealer("TestAdminCheck:Unauthorized");
 
       await prisma.account.update({ where: { id: account_id }, data: newData });
 
@@ -206,8 +214,16 @@ class AccountController {
         );
       }
 
-      const account = await prisma.account.findUnique({ where: { id: account_id } });
+      const account = await prisma.account.findUnique({
+        where: { id: account_id },
+        // ALTERAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+        include: { accountTie: true },
+      });
       if (!account) throw new ErrorDealer("User:DontExist");
+
+      // VERIFICAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+      if (account.accountTie.phoneNumber === "admin")
+        throw new ErrorDealer("TestAdminCheck:Unauthorized");
 
       await prisma.account.update({ where: { id: account_id }, data: { password } });
 

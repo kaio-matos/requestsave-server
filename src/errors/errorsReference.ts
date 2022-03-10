@@ -141,4 +141,10 @@ export const errorsReference: ErrorReferenceType[] = [
     message: "Este vínculo já está sendo usado com outra conta",
     status: 409,
   },
+
+  {
+    code: "TestAdminCheck:Unauthorized",
+    message: "O usuário Admin não pode ser alterado, por motivos de teste.",
+    status: 409,
+  },
 ];

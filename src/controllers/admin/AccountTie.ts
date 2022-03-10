@@ -31,10 +31,10 @@ class AccountTie {
     if (AccountTieValidation.edit({ id, ...newData }).error)
       throw new ErrorDealer("Validation:Error");
 
-    const accountTie = await prisma.accountTie.findUnique({
-      where: { id },
-    });
+    const accountTie = await prisma.accountTie.findUnique({ where: { id } });
     if (!accountTie) throw new ErrorDealer("AccountTie:DontExist");
+    // VERIFICAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+    if (accountTie.phoneNumber === "admin") throw new ErrorDealer("TestAdminCheck:Unauthorized");
 
     const updated = await prisma.accountTie.updateMany({
       where: { id: id },
@@ -51,6 +51,10 @@ class AccountTie {
 
     if (!id) throw new ErrorDealer("Validation:Error");
     if (AccountTieValidation.id(id).error) throw new ErrorDealer("Validation:Error");
+
+    // VERIFICAÇÃO TEMPORÁRIA PARA DEIXAR DISPONÍVEL PARA QUALQUER USUÁRIO USAR A PLATAFORMA
+    const accountTie = await prisma.accountTie.findUnique({ where: { id } });
+    if (accountTie.phoneNumber === "admin") throw new ErrorDealer("TestAdminCheck:Unauthorized");
 
     const deleted = await prisma.accountTie.deleteMany({ where: { id } });
     if (deleted.count === 0) throw new ErrorDealer("AccountTie:DontExist");

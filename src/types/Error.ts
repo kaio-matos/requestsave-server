@@ -30,6 +30,7 @@ type UnionCodesProductType = "Product:Exist" | "Product:DontExist";
 type UnionCodesRequestType = "Request:Exist" | "Request:DontExist" | "Request:SomeDocDontExist";
 type UnionCodesAccountTieType = "AccountTie:Exist" | "AccountTie:DontExist";
 type UnionCodesUserAccountTieType = "UserAccountTie:Used";
+type UnionCodesTestAdmin = "TestAdminCheck:Unauthorized";
 
 export type UnionCodesType =
   | UnionCodesPrismaType
@@ -42,4 +43,5 @@ export type UnionCodesType =
   | UnionCodesProductType
   | UnionCodesRequestType
   | UnionCodesAccountTieType
-  | UnionCodesUserAccountTieType;
+  | UnionCodesUserAccountTieType
+  | UnionCodesTestAdmin;

@@ -1,0 +1,4 @@
+[submodule "requestsave-server"]
+	path = requestsave-server
+	url = https://github.com/kaio-matos/requestsave-server.git
+	branch = main
